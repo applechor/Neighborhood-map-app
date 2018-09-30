@@ -1,0 +1,101 @@
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+}
+
+.App-header {
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
+}
+
+.App-title {
+    font-size: 1.5em;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+@keyframes App-logo-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/*-----------------------------------------------------*/
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container{
+    display: flex;
+    flex-flow: row nowrap;
+}
+#map {
+    height: 100vh;
+    width: 100%;
+
+}
+
+.header {
+    /*width: 100%;*/
+    /*display: block;*/
+}
+.header_menu {
+    display: inline-block;
+    font-size: 2em;
+    float: right;
+    margin: 17px 7px 10px;
+}
+.header-title {
+    display: inline-block;
+}
+
+.navbar {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}   
+
+.sidebar-search {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 350px;
+    /*overflow-y: scroll;*/
+    
+}  
+
+.search-items {
+    font-size: 16px;
+    padding: 5px;
+}
+.list-items {
+    /*margin-bottom: 1em;*/
+
+}
+.items {
+    list-style-type: none;
+    padding: 0;
+    
+    
+    text-align: left;
+}
+.items >li {
+    margin: 1em;
+    font-size: 16px;
+}
