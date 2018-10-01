@@ -6,8 +6,8 @@ class ListItems extends Component {
       <div className="list-items">
 
       	<ol className="items">
-      		<li> Ko Lanta</li>
-      		<li> Ko Lipe</li>
+      		<li> AA </li>
+      		<li> BB </li>
       	</ol>
       </div>
     );

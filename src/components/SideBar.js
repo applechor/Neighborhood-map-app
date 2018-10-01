@@ -15,7 +15,7 @@ class SideBar extends Component {
       		//value={'aa'}
       		//onchange={(event) => console.log(event)}
       	/>
-      	
+      	{/*<input id="clear-list" type="button" value="Clear"/>*/}
       <ListItems />
       </div>
     );

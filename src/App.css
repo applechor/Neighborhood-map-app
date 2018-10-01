@@ -59,7 +59,7 @@ html, body {
 .header_menu {
     display: inline-block;
     font-size: 2em;
-    float: right;
+    float: left;
     margin: 17px 7px 10px;
 }
 .header-title {
@@ -74,8 +74,8 @@ html, body {
 
 .sidebar-search {
     display: flex;
-    flex-flow: column nowrap;
-    width: 350px;
+    flex-flow: column wrap;
+    width: 350px; /* 100%*/
     /*overflow-y: scroll;*/
     
 }  
