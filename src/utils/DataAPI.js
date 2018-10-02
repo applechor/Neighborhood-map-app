@@ -16,7 +16,7 @@ const version = "20180930"
 const latlang = "18.787747,98.993128"
 const query = "coffee"
 const nearPlace = "Chiang Mai, Thailand"
-const number_of_results = "20"
+const number_of_results = "3"
 
 // function handleError(response) {
 // 	if(!response.ok) {
@@ -27,9 +27,10 @@ const number_of_results = "20"
 
 
 export const getDetail = (venueId) =>
-  	fetch(`${api}/${venueId}`)
+  	fetch(`${api}/${venueId}?client_id=${client_ID}&client_secret=${client_secret}&v=${version}`)
     	.then(res => res.json())
-    	.then(data => data.venue)
+    	.then(data => data)
+    	//.catch(err => console.log(err))
 
 export const getListAll = () =>
   	fetch(`${api}/explore?ll=${latlang}&query=${query}&near=${nearPlace}&limit=${number_of_results}&client_id=${client_ID}&client_secret=${client_secret}&v=${version}`)

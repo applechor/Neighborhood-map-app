@@ -19,27 +19,65 @@ import * as DataAPI from './utils/DataAPI'
 
 class App extends Component {
     state = {
-        venues: []
+        venues: [], // 
+        allVenueId: [] // venue_id of all list item
     }
 
+    // invoked after the component is inserted in the DOM
     componentDidMount() {
 
         DataAPI.getListAll()   
-            .then(res => {
-                if (res.meta.code === 200) {
-                 //throw Error(res.statusText?res.statusText:"unknown network error")
-                    return res.response.groups[0].items;
+        .then(res => {
+            if (res.meta.code === 200) {
+                return (res.response.groups[0].items);
+            }
+        }) 
+        /* --- back up 1
+        .then(venues => {
+            let venueId = [];
+            //venues.map(venue => venues.push(venue))
+            this.setState({venues})
+            console.log(venues)
+        })*/
+/* --- back up 2
+        .then(listVenues => {
+            let allVenueId = []
+            listVenues.map(listVenue => 
+                allVenueId.push(listVenue.venue.id)
+            )
+            this.setState({allVenueId})
+            console.log(allVenueId)
+            return allVenueId;
+                
+        })
+})*/
+        .then(listVenues => {
+            let allVenuesDetails = []
+            listVenues.map(listVenue => 
+                DataAPI.getDetail(listVenue.venue.id)
+                .then(venueDetails => {
+                    if(venueDetails.meta.code !== 200 || venueDetails === undefined) {
+                        console.log("Error DataAPI.getDetail: "+venueDetails.meta.code +" "+ venueDetails.meta.errorDetail)
+                    }
+                    allVenuesDetails.push(venueDetails)
+
+                    console.log(allVenuesDetails)
                 }
-            }) 
-            .then(venues => {
 
-                //venues.map(venue => venues.push(venue))
+                ) 
+                .catch(err => console.log(err))
+            )
+        })
+/* --- back up 2
+        .then(allVenueId => {
+            
+                DataAPI.getDetail(venueId)//(`${allVenueId}`)
+            .then(venueDetails => console.log(venueDetails))
+            .catch(err => console.log(err))
+        })
+})*/
 
-                this.setState({venues})
-                console.log(venues)
-            })
-
-            .catch(err => console.log("Error:", err + " unknown network error"))
+        .catch(err => console.log("Error DataAPI.getListAll: ", err + " or unknown network error"))
     }
 
     render() {

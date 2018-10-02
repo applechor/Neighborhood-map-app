@@ -30,6 +30,14 @@ export class MapContainer extends Component {
         }
     }
 
+    infoWindowHasClosed = (props, marker, e) => {
+        this.setState({
+            showingInfoWindow: false, 
+            activeMarker: {},
+            selectedPlace: {}
+        })
+    }
+
     render() {
 
         return (
@@ -44,9 +52,9 @@ export class MapContainer extends Component {
             >
             
                 {(this.props.venues) && (
-                    this.props.venues.map(venue => (
+                    this.props.venues.map((venue, index) => (
                         <Marker
-                            key={venue.venue.id}
+                            key={index}
                             position={{lat: venue.venue.location.lat, lng: venue.venue.location.lng}}
                             title={venue.venue.name}
                             name={venue.venue.name}
@@ -60,9 +68,11 @@ export class MapContainer extends Component {
                     <InfoWindow
                       marker={this.state.activeMarker}
                       visible={this.state.showingInfoWindow}
-                      maxWidth={150}>
-                    {/*style={{position: 'absolute', width: '165px'}}>*/}
+                      maxWidth={150}
+                      onClose={(props, marker, e) => this.infoWindowHasClosed(props, marker, e)}>
+                    {/*style={{position: 'absolute', width: '165px' or 353px height 312px}}>*/}
                         <div>
+                        {/*style={{display: inline-block; overflow: auto; max-height:654px;max-width;654px}}*/}
                             <h4>{this.state.selectedPlace.name}</h4>
                             <div>{this.state.selectedPlace.address}</div>
                         </div>
