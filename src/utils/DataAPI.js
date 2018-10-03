@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 // Generate a unique token for storing your bookshelf data on the backend server.
 let token = localStorage.token
 if (!token)
@@ -10,9 +11,9 @@ const headers = {
 
 /*======================FourSquare API===========================*/
 const api = "https://api.foursquare.com/v2/venues"
-const client_ID = "VXXKOU23M1YV1HW40RU3RVWRJ5JXA50MH5AD51M15W5SPB3Z"
-const client_secret = "4UG11WJJ0S5A1H3NXL42T0ORH4E4VY4PUH25VVJUTKMPOCXY"
-const version = "20180930"
+const client_ID = "0PZMLR4C1VQ5RTO3S3GXTYKBXNFIC0DUURUME32CNGMV1FYQ"//"VXXKOU23M1YV1HW40RU3RVWRJ5JXA50MH5AD51M15W5SPB3Z"
+const client_secret = "HU11MC3YLS3HUR1SYXZGB0FFKBX5SD2TKRAWYADP1F21KQ3E"//"4UG11WJJ0S5A1H3NXL42T0ORH4E4VY4PUH25VVJUTKMPOCXY"
+const version = "20180323"//"20180930"
 const latlang = "18.787747,98.993128"
 const query = "coffee"
 const nearPlace = "Chiang Mai, Thailand"
@@ -24,15 +25,25 @@ const number_of_results = "3"
 // 	}
 // 	return response.json();
 // }
-
+//https://api.foursquare.com/v2/venues/4ceb5edaf86537047e7ec2c4?client_id=VXXKOU23M1YV1HW40RU3RVWRJ5JXA50MH5AD51M15W5SPB3Z&client_secret=4UG11WJJ0S5A1H3NXL42T0ORH4E4VY4PUH25VVJUTKMPOCXY&v=20180930
 
 export const getDetail = (venueId) =>
   	fetch(`${api}/${venueId}?client_id=${client_ID}&client_secret=${client_secret}&v=${version}`)
     	.then(res => res.json())
     	.then(data => data)
     	//.catch(err => console.log(err))
+    	   //      .then(response => response.json()
+        //   .then(text => ({
+        //     json: text,
+        //     meta: response
+        //   }))
+        // )
+        // .then(({ json, meta }) => {
+        //   return json
+        // })
 
-export const getListAll = () =>
+
+export const getAll = () =>
   	fetch(`${api}/explore?ll=${latlang}&query=${query}&near=${nearPlace}&limit=${number_of_results}&client_id=${client_ID}&client_secret=${client_secret}&v=${version}`)
     	.then(res => res.json())
     	.then(data => data)

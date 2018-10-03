@@ -1,4 +1,4 @@
-// eslint-disable-line no-extend-native
+// eslint-disable-next-line
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
@@ -9,91 +9,64 @@ import * as DataAPI from './utils/DataAPI'
 //import * as ErrorBoundary from './components/ErrorBoundary'
 //import ListItems from './components/ListItems'
         
-        // {
-        //  if(!res.ok) {
-        //      //throw Error(res.statusText?res.statusText:"unknown network error")
-        //      console.log(res.statusText?res.statusText:"unknown network error")
-        //  }
-        //  return res.json()
-        // })
-
-class App extends Component {
+ class App extends Component {
     state = {
-        venues: [], // 
-        allVenueId: [] // venue_id of all list item
+        locations: [], // list of all location in details
+        defaultLocations: [], // copy of list of all location in details
+        defaultZoom: 14, // default of zoom
+        defaultCenter: {lat: 18.787747, lng: 98.993128}
     }
-
+ 
     // invoked after the component is inserted in the DOM
     componentDidMount() {
-
-        DataAPI.getListAll()   
+        // Fetch list of venues
+        DataAPI.getAll()   
         .then(res => {
             if (res.meta.code === 200) {
+console.log("res",res)
                 return (res.response.groups[0].items);
             }
         }) 
-        /* --- back up 1
-        .then(venues => {
-            let venueId = [];
-            //venues.map(venue => venues.push(venue))
-            this.setState({venues})
-            console.log(venues)
-        })*/
-/* --- back up 2
+        // 
         .then(listVenues => {
-            let allVenueId = []
-            listVenues.map(listVenue => 
-                allVenueId.push(listVenue.venue.id)
-            )
-            this.setState({allVenueId})
-            console.log(allVenueId)
-            return allVenueId;
-                
+            let listVenuesIds = []
+            listVenues.map(listVenue => listVenuesIds.push(listVenue.venue.id))
+console.log("listVenues",listVenues)
+            // this.setState({
+            //     locations: listVenues,
+            //     listLocationIds: listVenuesIds
+            // })
+            return listVenuesIds;
         })
-})*/
-        .then(listVenues => {
-            let allVenuesDetails = []
-            listVenues.map(listVenue => 
-                DataAPI.getDetail(listVenue.venue.id)
-                .then(venueDetails => {
-                    if(venueDetails.meta.code !== 200 || venueDetails === undefined) {
-                        console.log("Error DataAPI.getDetail: "+venueDetails.meta.code +" "+ venueDetails.meta.errorDetail)
+        .then(listVenuesIds => {
+console.log("listVenuesIds",listVenuesIds)
+            let listVenuesDetails = []
+            listVenuesIds.map(listVenuesId => 
+                DataAPI.getDetail(listVenuesId)
+                .then(venuesDetails => {
+console.log("venuesDetails",venuesDetails)
+                    if (venuesDetails.meta.code !== 200 || venuesDetails === undefined) {
+                    console.log("Error DataAPI.getDetail: error_code "+venuesDetails.meta.code +" error_detail "+ venuesDetails.meta.errorDetail)
                     }
-                    allVenuesDetails.push(venueDetails)
-
-                    console.log(allVenuesDetails)
-                }
-
-                ) 
-                .catch(err => console.log(err))
+                    listVenuesDetails.push(venuesDetails.response.venue)
+console.log("listVenuesDetails",listVenuesDetails)
+                    this.setState({
+                        locations: listVenuesDetails,
+                        defaultLocations: listVenuesDetails
+                    })
+                })
             )
-        })
-/* --- back up 2
-        .then(allVenueId => {
-            
-                DataAPI.getDetail(venueId)//(`${allVenueId}`)
-            .then(venueDetails => console.log(venueDetails))
-            .catch(err => console.log(err))
-        })
-})*/
 
-        .catch(err => console.log("Error DataAPI.getListAll: ", err + " or unknown network error"))
+        })
+        .catch(err => console.log("Error when fetch DataAPI.getAll: ", err))
     }
+
 
     render() {
         return (
 
             <div className="App" role="main">
-                {/*} <header className="App-header">
-                  <img src={logo} className="App-logo" alt="logo" />
-                  <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                  To get started, edit <code>src/App.js</code> and save to reload.
-                </p>*/}
-
                 <header className="header"> 
-                    {/*<h1 className="header-title"> Islands in Thailand </h1>*/}
                 <NavBar />
                 </header>
                 
@@ -107,7 +80,8 @@ class App extends Component {
                     <MapContainer 
                         role="application"
                         aria-label="Google Map"
-                        venues={this.state.venues}
+                        locations={this.state.locations}
+                        listLocationIds={this.state.listLocationIds}
                     />
                 {/*</ErrorBoundary>*/}
                     </div>

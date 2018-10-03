@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SearchBar from './SearchBar'
 import ListItems from './ListItems'
 
 class SideBar extends Component {
@@ -6,12 +7,7 @@ class SideBar extends Component {
     return (
       <div className="sidebar-search">
       
-      	<input 
-      		className="search-items"
-      		type="text"
-          role="search"
-          aria-label="search items"
-      		placeholder="Search..."
+      	<SearchBar
       		//value={'aa'}
       		//onchange={(event) => console.log(event)}
       	/>
