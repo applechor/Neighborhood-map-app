@@ -1,5 +1,6 @@
-// eslint-disable-next-line
+
 // Generate a unique token for storing your bookshelf data on the backend server.
+/*eslint-disable-next-line*/
 let token = localStorage.token
 if (!token)
   token = localStorage.token = Math.random().toString(36).substr(-8)
@@ -11,9 +12,15 @@ const headers = {
 
 /*======================FourSquare API===========================*/
 const api = "https://api.foursquare.com/v2/venues"
-const client_ID = "0PZMLR4C1VQ5RTO3S3GXTYKBXNFIC0DUURUME32CNGMV1FYQ"//"VXXKOU23M1YV1HW40RU3RVWRJ5JXA50MH5AD51M15W5SPB3Z"
-const client_secret = "HU11MC3YLS3HUR1SYXZGB0FFKBX5SD2TKRAWYADP1F21KQ3E"//"4UG11WJJ0S5A1H3NXL42T0ORH4E4VY4PUH25VVJUTKMPOCXY"
-const version = "20180323"//"20180930"
+//const client_ID = "VXXKOU23M1YV1HW40RU3RVWRJ5JXA50MH5AD51M15W5SPB3Z"
+//const client_ID ="0PZMLR4C1VQ5RTO3S3GXTYKBXNFIC0DUURUME32CNGMV1FYQ" // from other1
+const client_ID = "ETBUYYTEGDY4WCF1IZXYZJVILWVA5NTLHGQ0WHA13OL2QGA2"// from other2
+//const client_secret = "4UG11WJJ0S5A1H3NXL42T0ORH4E4VY4PUH25VVJUTKMPOCXY"
+//const client_secret = "HU11MC3YLS3HUR1SYXZGB0FFKBX5SD2TKRAWYADP1F21KQ3E"// from other1
+const client_secret = "MJRDFQ43T0FSXPBBFA535VVJVKLUFATMY5IHP2DOFTOKZSYP"// from other2
+//const version = "20180930"
+//const version ="20180323"// from other1
+const version = "20180708"// from other2
 const latlang = "18.787747,98.993128"
 const query = "coffee"
 const nearPlace = "Chiang Mai, Thailand"

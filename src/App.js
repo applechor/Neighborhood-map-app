@@ -1,87 +1,173 @@
-// eslint-disable-next-line
+/*eslint-disable-next-line*/
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import MapContainer from './components/MapContainer'
 import NavBar from './components/NavBar'
-import SideBar from './components/SideBar'
+import SearchBar from './components/SearchBar'
 import * as DataAPI from './utils/DataAPI'
 //import * as ErrorBoundary from './components/ErrorBoundary'
 //import ListItems from './components/ListItems'
         
  class App extends Component {
     state = {
-        locations: [], // list of all location in details
-        defaultLocations: [], // copy of list of all location in details
-        defaultZoom: 14, // default of zoom
-        defaultCenter: {lat: 18.787747, lng: 98.993128}
+        filteredLocations: [], // list of all location in details which for filtering
+        defaultLocations: [], // list of all location in details that was shown when no query in search input
+        zoom: 14,
+        defaultZoom: 10, // default of zoom
+        center: {lat: 18.787747, lng: 98.993128},
+        defaultCenter: {lat: 18.787747, lng: 98.993128},
+        bounds: [],
+        markers: [],
+        isItemClicked: false
     }
  
     // invoked after the component is inserted in the DOM
     componentDidMount() {
-        // Fetch list of venues
+        // Fetch list of venues from foursquare
         DataAPI.getAll()   
         .then(res => {
+
             if (res.meta.code === 200) {
-console.log("res",res)
+                console.log("res",res)
                 return (res.response.groups[0].items);
             }
+            
         }) 
         // 
         .then(listVenues => {
             let listVenuesIds = []
             listVenues.map(listVenue => listVenuesIds.push(listVenue.venue.id))
-console.log("listVenues",listVenues)
-            // this.setState({
-            //     locations: listVenues,
-            //     listLocationIds: listVenuesIds
-            // })
+//console.log("listVenues",listVenues)
             return listVenuesIds;
         })
         .then(listVenuesIds => {
-console.log("listVenuesIds",listVenuesIds)
+//console.log("listVenuesIds",listVenuesIds)
             let listVenuesDetails = []
+            let markers=[]
             listVenuesIds.map(listVenuesId => 
                 DataAPI.getDetail(listVenuesId)
                 .then(venuesDetails => {
-console.log("venuesDetails",venuesDetails)
+//console.log("venuesDetails",venuesDetails)
                     if (venuesDetails.meta.code !== 200 || venuesDetails === undefined) {
                     console.log("Error DataAPI.getDetail: error_code "+venuesDetails.meta.code +" error_detail "+ venuesDetails.meta.errorDetail)
                     }
                     listVenuesDetails.push(venuesDetails.response.venue)
-console.log("listVenuesDetails",listVenuesDetails)
-                    this.setState({
-                        locations: listVenuesDetails,
-                        defaultLocations: listVenuesDetails
-                    })
-                })
-            )
+                    console.log("listVenuesDetails",listVenuesDetails)
 
+                    let marker = {
+                        id: venuesDetails.response.venue.id,
+                        name: venuesDetails.response.venue.name,
+                        lat: venuesDetails.response.venue.location.lat,
+                        lng: venuesDetails.response.venue.location.lng,
+                        isVisible: true,
+                        isOpen: false
+                    }
+                    markers.push(marker)
+                   //console.log("Tong"+markers)
+                    this.setState({
+                        filteredLocations: listVenuesDetails,
+                        defaultLocations: listVenuesDetails,
+                        markers: markers
+                    
+                    })
+                  
+                })
+              
+            )
+           console.log('locations:',this.state.locations)
         })
         .catch(err => console.log("Error when fetch DataAPI.getAll: ", err))
+    } // END componentDidMount
+
+
+
+
+    // update filteredLocations when already searched
+    updateLocation = (searchedResults, query) => {
+        if(query) {
+            this.setState ((state) => ({
+
+                filteredLocations: searchedResults
+            }))
+        } else {
+            this.setState({filteredLocations: this.state.defaultLocations})
+        }
+    }
+    
+    // substring location name
+    getNewName = (locationName) => {
+        let newName;
+        if (locationName === undefined) {
+            newName = ""
+        } else if (locationName.includes("(")) {
+            newName = locationName.substr(0,locationName.indexOf("("))
+        } else {
+            newName = locationName
+        }
+        return newName;
     }
 
+    //handle the list-item when is clicked
+    handleItemClick = (location) => {
+        console.log("location:",location)
 
+            //      console.log(location.location.lat,location.location.lng)
+        const marker = this.state.markers.find(marker => marker.id === location.id)
+
+        let newCenter
+        if(location !== undefined && location.location !== undefined) {
+            newCenter = {lat: location.location.lat, lng: location.location.lng}
+           //       console.log("newCenter:",newCenter)
+        }
+
+        //      this.setNewCenter(newCenter, location.id)
+        this.setState({
+            center: newCenter,
+            zoom: 17,
+            isItemClicked: true
+        })
+        
+    }
+
+    // setNewCenter = (newCenter, location) => {
+    //     //console.log(newCenter)
+    //     this.setState({
+    //         center: newCenter,
+    //         zoom: 18
+    // })
+        
+    // }
+            
     render() {
+
+         
         return (
 
-            <div className="App" role="main">
-                <header className="header"> 
+            <div className = "App" role = "main">
+                <header className = "header"> 
                 <NavBar />
                 </header>
                 
-                <div className="main-container">
+                <div className = "main-container">
                     
-                    <SideBar 
-
+                    <SearchBar 
+                        locations = {this.state.filteredLocations}
+                        updateLocation = {this.updateLocation}
+                        getNewName = {this.getNewName}
+                        handleItemClick = {this.handleItemClick}
                     />
                     <div id="map">
                     {/*<ErrorBoundary>*/}
                     <MapContainer 
-                        role="application"
-                        aria-label="Google Map"
-                        locations={this.state.locations}
-                        listLocationIds={this.state.listLocationIds}
+                        role ="application"
+                        aria-label = "Google Map"
+                        locations = {this.state.filteredLocations}
+                        center = {this.state.center}
+                        zoom = {this.state.zoom}
+                        getNewName = {this.getNewName}
+                        bounds={this.state.bounds}
+                        markers={this.state.markers}
                     />
                 {/*</ErrorBoundary>*/}
                     </div>
