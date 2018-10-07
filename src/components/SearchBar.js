@@ -22,6 +22,9 @@ class searchBar extends Component {
 
     // matching text with location.name
     showingLocations = (query) => {
+        console.log("query:", query)
+        console.log("location:", this.props.locations)
+
         let showingLocations
 
         if(this.props.locations!==undefined && this.props.locations.length>0) {
@@ -29,11 +32,11 @@ class searchBar extends Component {
         }
         if (query) {
             const match = new RegExp(escapeRegExp(query), 'i')
-            showingLocations = this.props.locations.filter((location) => match.test(location.name))
+            showingLocations = this.props.locations.find((location) => match.test(location.name))
         } else {
             showingLocations = this.props.locations.name
         }
-        console.log(showingLocations)
+        console.log("showingLocations:",showingLocations)
         return showingLocations;
     }
 

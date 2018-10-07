@@ -8,6 +8,190 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
  
 export class MapContainer extends Component {
     state = {
+
+        markerDetails: [] //marker info in detail for selected marker
+       
+    }
+
+    infoWindowHasClosed = (props, marker, e) => {
+        this.setState({
+            showingInfoWindow: false, 
+            activeMarker: {},
+            selectedPlace: {}
+        })
+    }
+
+      // makeMarkerIcon=(markerColor)=> {
+      //    var markerImage = 
+      //   {url: 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+      //      '|40|_|%E2%80%A2',
+      //     size: new this.props.google.maps.Size(30, 39),
+      //     origin: new this.props.google.maps.Point(0, 0),
+      //     anchor: new this.props.google.maps.Point(10, 34),
+      //     scaledSize: new this.props.google.maps.Size(30, 39)}
+  
+      //       return markerImage;
+      // }
+// componentDidUpdate() {
+//     console.log(this.state.markers)
+//     const bounds = new window.google.maps.LatLngBounds()
+//     this.props.markers.map((result) => {
+//         bounds.extend(new window.google.maps.LatLng(
+//             this.props.markers.lat,
+//             this.props.markers.lng
+//         ));
+//     });
+          
+//     this.refs.resultMap.map.fitBounds(bounds)
+// }
+// adjustMap(mapProps, map) {
+//     console.log("mapProps:", mapProps)
+//     console.log("map:", map)
+
+//   const {google, markers} = mapProps;
+//   const bounds = new google.maps.LatLngBounds();
+// //console.log(this.props.markers)
+//   this.props.markers.forEach(marker => {
+
+//     const {lat, lng} = marker;
+//     console.log(marker.lat)
+
+//     bounds.extend(new google.maps.LatLng(lat, lng));
+//   });
+
+//   map.fitBounds(bounds);
+  // map.panToBounds(bounds);
+//}
+
+    render() {
+        // let details=(this.props.activeMarkerDetails !== undefined && 
+        //     this.props.activeMarkerDetails !== null)?
+        //     this.props.activeMarkerDetails : undefined
+                    let details=(this.props.selectedLocationDetails !== undefined && this.props.selectedLocationDetails !== null)?
+                        this.props.selectedLocationDetails : undefined
+console.log('details:',details)
+        let photo=details.bestPhoto
+        let img
+    if (details !== undefined && details !== null) {
+        
+        if(photo!==undefined && photo!==null) {
+            img=`${photo.prefix}150x150${photo.suffix}`
+        } else {
+            img=process.env.PUBLIC_URL+'/no-photo-available.jpg'
+        }
+    }
+        
+
+// var bounds = new this.props.google.maps.LatLngBounds();
+// console.log(this.props.markers)
+//     for (var i = 0; i < this.props.markers.length; i++) {
+//         const {lat, lng} = this.props.markers
+//         console.log(this.props.markers.lat)
+//         bounds.extend(new google.maps.LatLng(lat, lng));
+//     }
+
+//var highlightedIcon = this.makeMarkerIcon('FFFF24')
+
+//console.log("markers_aaaa:",this.props.markers)
+        return (
+            
+            <Map 
+                google={this.props.google}
+               // ref={"resultMap"}
+                initialCenter={{
+                    lat: 18.787747,
+                    lng: 98.993128
+                }}
+                center={this.props.center}
+                zoom={this.props.zoom}
+                onClick={this.props.handleMapClick}
+                //onReady={this.adjustMap}
+               //bounds={bounds}  
+                style={{
+                                    position: 'static',
+                                    width: '100%',
+                                    height: '100%',
+                                    marginBottom: '20px',
+                                    border: '1px solid grey',
+                                    boxSizing: 'border-box'
+                                 }}
+            >
+            
+               {/* {this.props.markers && (
+                    this.props.markers.map((marker, index) => (*/}
+                {this.props.markers && (
+                    this.props.markers.filter(marker => marker.isVisible).map((marker, index) => (
+                        <Marker
+                            key={index}
+                            position={{lat: marker.lat, lng: marker.lng}}
+                            title={marker.name}
+                            name={this.props.getNewName(marker.name)}
+                            id={marker.id}
+                            onClick={(props, marker, e) => this.props.handleMarkerClick(props, marker, e)}
+                                //onClick={(props, marker, e) => this.props.handleMarkerClick(props, marker, e)}
+                            //animation={this.state.activeMarker ? (location.id===this.state.activeMarker.id 
+                            //    ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP) : google.maps.Animation.DROP}
+                                //    animation={arr.length===1 ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP}
+                                //    position={{lat: marker.lat, lng: marker.lng}}
+                                //    title={marker.name}
+                                //    name={this.props.getNewName(marker.name)}
+                                //    id={marker.id}
+                                //    onClick={this.onMarkerClick}
+                            
+
+                            // address={this.props.locations.location.address}
+                                
+                            //animation= {this.props.google.maps.Animation.DROP}
+                            //bounds={mapBounds}
+                            //icon={highlightedIcon}
+                             
+                        />
+                    ))
+                )}    
+                        
+                <InfoWindow
+                   
+                    marker={this.props.activeMarker}
+                    visible={this.props.showingInfoWindow}
+                    maxWidth={250}
+                    onClose={(props, marker, e) => this.infoWindowHasClosed(props, marker, e)}>
+                    
+                    <div className="iw-container">
+                        <h4 className="iw-header">{this.props.selectedLocation.name}</h4>
+                        
+                        <p>{details.location!==undefined && details.location.address ? details.location.address : "What!!!!!!!!" }</p>
+                        <p>{details.hours!==undefined && details.hours.timeframes[0].days ? "Days: "+details.hours.timeframes[0].days : "" }</p>
+                        <p>{details.hours!==undefined && details.hours.status ? details.hours.status : "" }</p>
+                        <p>{details.rating!==undefined && details.rating ? "Rating: "+details.rating : "" }</p>
+                        <img 
+                            className="iw-photo" 
+                            src={img} 
+                            alt={details.description ? details.description : details.name}
+                            tabIndex={0}
+                        />
+                    </div>
+                      
+                            
+                </InfoWindow> 
+
+            </Map>
+
+        );
+    }
+}
+ 
+export default GoogleApiWrapper({
+    apiKey: 'AIzaSyCOj4AW3XChO2jkcseRXXPy9Szauf2XFSY'
+})(MapContainer)
+
+
+
+
+/*********************************************************
+** BACK UP
+
+export class MapContainer extends Component {
+    state = {
         markers: [],
         showingInfoWindow: false, // show info window
         activeMarker: {}, // marker info for selected marker
@@ -64,19 +248,36 @@ export class MapContainer extends Component {
   
             return markerImage;
       }
-componentDidUpdate() {
-    console.log(this.state.markers)
-    const bounds = new window.google.maps.LatLngBounds()
-    this.props.markers.map((result) => {
-        bounds.extend(new window.google.maps.LatLng(
-            this.props.markers.lat,
-            this.props.markers.lng
-        ));
-    });
+// componentDidUpdate() {
+//     console.log(this.state.markers)
+//     const bounds = new window.google.maps.LatLngBounds()
+//     this.props.markers.map((result) => {
+//         bounds.extend(new window.google.maps.LatLng(
+//             this.props.markers.lat,
+//             this.props.markers.lng
+//         ));
+//     });
           
-    this.refs.resultMap.map.fitBounds(bounds)
-}
+//     this.refs.resultMap.map.fitBounds(bounds)
+// }
+// adjustMap(mapProps, map) {
+//     console.log("mapProps:", mapProps)
+//     console.log("map:", map)
 
+//   const {google, markers} = mapProps;
+//   const bounds = new google.maps.LatLngBounds();
+// //console.log(this.props.markers)
+//   this.props.markers.forEach(marker => {
+
+//     const {lat, lng} = marker;
+//     console.log(marker.lat)
+
+//     bounds.extend(new google.maps.LatLng(lat, lng));
+//   });
+
+//   map.fitBounds(bounds);
+  // map.panToBounds(bounds);
+//}
 
     render() {
         let details=(this.state.markerDetails !== undefined && this.state.markerDetails !== null)?
@@ -91,6 +292,14 @@ componentDidUpdate() {
             img=process.env.PUBLIC_URL+'/no-photo-available.jpg'
         }
 
+// var bounds = new this.props.google.maps.LatLngBounds();
+// console.log(this.props.markers)
+//     for (var i = 0; i < this.props.markers.length; i++) {
+//         const {lat, lng} = this.props.markers
+//         console.log(this.props.markers.lat)
+//         bounds.extend(new google.maps.LatLng(lat, lng));
+//     }
+
 var highlightedIcon = this.makeMarkerIcon('FFFF24')
 
 //console.log("markers_aaaa:",this.props.markers)
@@ -98,7 +307,7 @@ var highlightedIcon = this.makeMarkerIcon('FFFF24')
             
             <Map 
                 google={this.props.google}
-                ref="resultMap"
+               // ref={"resultMap"}
                 initialCenter={{
                     lat: 18.787747,
                     lng: 98.993128
@@ -106,7 +315,8 @@ var highlightedIcon = this.makeMarkerIcon('FFFF24')
                 center={this.props.center}
                 zoom={this.props.zoom}
                 onClick={this.onMapClick}
-               // bounds={this.state.bounds}  
+                //onReady={this.adjustMap}
+               //bounds={bounds}  
                 style={{
                                     position: 'static',
                                     width: '100%',
@@ -118,7 +328,7 @@ var highlightedIcon = this.makeMarkerIcon('FFFF24')
             >
             
                {/* {this.props.markers && (
-                    this.props.markers.map((marker, index) => (*/}
+                    this.props.markers.map((marker, index) => (*
                 {this.props.locations && (
                     this.props.locations.map((location, index, arr) => (
                         <Marker
@@ -145,13 +355,8 @@ var highlightedIcon = this.makeMarkerIcon('FFFF24')
                             //bounds={mapBounds}
                             //icon={highlightedIcon}
                              
-                        />
-                    ))
-             )
-
-    }
-                
-                    <InfoWindow
+                        >
+<InfoWindow
                       marker={this.state.activeMarker}
                       visible={this.state.showingInfoWindow}
                       maxWidth={150}
@@ -174,31 +379,33 @@ var highlightedIcon = this.makeMarkerIcon('FFFF24')
                         </div>
                         
                     </InfoWindow> 
+</Marker>
+                    ))
+                )}
+                
+                    
                    
-{/*style={{display: inline-block; overflow: auto; max-height:654px;max-width;654px}}*/}
+{/*style={{display: inline-block; overflow: auto; max-height:654px;max-width;654px}}*
 
 {/*<InfoWindowContent 
                         selectedPlaceName = {this.state.selectedPlace.name}
                         selectedPlaceAddress = {this.state.selectedPlace.address}
                        
-                        />*/}
+                        />*/
 
 
-                    {/* locationIds = {location.venue.id}//{this.props.listLocationIds}*/}
-                {/*))}*/}
-{/*style={{position: 'absolute', width: '165px' or 353px height 312px}}>
+                    /* locationIds = {location.venue.id}//{this.props.listLocationIds}*/
+                /*))}*/
+/*style={{position: 'absolute', width: '165px' or 353px height 312px}}>
                         <div>
                         {/*style={{display: inline-block; overflow: auto; max-height:654px;max-width;654px}}
                             <h4>{this.state.selectedPlace.name}</h4>
                             <div>{this.state.selectedPlace.address}</div>
-                        </div>*/}
+                        </div>*
             </Map>
 
         );
     }
 }
- 
-export default GoogleApiWrapper({
-    apiKey: 'AIzaSyCOj4AW3XChO2jkcseRXXPy9Szauf2XFSY'
-})(MapContainer)
 
+*/
