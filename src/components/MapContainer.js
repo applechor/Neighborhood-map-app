@@ -70,12 +70,12 @@ export class MapContainer extends Component {
                     let details=(this.props.selectedLocationDetails !== undefined && this.props.selectedLocationDetails !== null)?
                         this.props.selectedLocationDetails : undefined
 console.log('details:',details)
-        let photo=details.bestPhoto
+        //let photo=details.bestPhoto
         let img
     if (details !== undefined && details !== null) {
         
-        if(photo!==undefined && photo!==null) {
-            img=`${photo.prefix}150x150${photo.suffix}`
+        if(details.bestPhoto!==undefined && details.bestPhoto!==null) {
+            img=`${details.bestPhoto.prefix}150x150${details.bestPhoto.suffix}`
         } else {
             img=process.env.PUBLIC_URL+'/no-photo-available.jpg'
         }
@@ -154,10 +154,11 @@ console.log('details:',details)
                     marker={this.props.activeMarker}
                     visible={this.props.showingInfoWindow}
                     maxWidth={250}
-                    onClose={(props, marker, e) => this.infoWindowHasClosed(props, marker, e)}>
-                    
+                   // onClose={(props, marker, e) => this.infoWindowHasClosed(props, marker, e)}
+                    >
+                
                     <div className="iw-container">
-                        <h4 className="iw-header">{this.props.selectedLocation.name}</h4>
+                        <h4 className="iw-header">{details.name}</h4>
                         
                         <p>{details.location!==undefined && details.location.address ? details.location.address : "What!!!!!!!!" }</p>
                         <p>{details.hours!==undefined && details.hours.timeframes[0].days ? "Days: "+details.hours.timeframes[0].days : "" }</p>
@@ -170,7 +171,6 @@ console.log('details:',details)
                             tabIndex={0}
                         />
                     </div>
-                      
                             
                 </InfoWindow> 
 

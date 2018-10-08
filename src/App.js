@@ -114,18 +114,23 @@ import * as DataAPI from './utils/DataAPI'
 
     //handle when a marker is clicked
     handleMarkerClick = (props, marker, e) => {
-        console.log("propsMarkerClick:",props)
-        console.log("markerMarkerClick: ",marker)
-        console.log("eMarkerClick: ",e)
+         console.log("propsMarkerClick:",props)
+         console.log("markerMarkerClick: ",marker)
+         console.log("eMarkerClick: ",e)
 
          let details = this.state.locations.filter(location => location.id === marker.id) 
-        // console.log("details;",details)
+         //const marker2 = this.state.markers.find(marker2 => marker2.id === marker.id)
+         //console.log("Marker2",marker2)
+         console.log("detailsMarkerClick;",details)
         this.setState({
-            selectedLocation: props,
+            //selectedLocation: props,
             activeMarker: marker,
+            //activeMarker: Object.assign(this.state.activeMarker, marker),
             showingInfoWindow: true,
             selectedLocationDetails: details[0]
             })
+        console.log("activeMarkerMarkerClick: ",this.state.activeMarker)
+        //console.log(marker.getMarkers())
     }
 
                //  handleMarkerClick = (props, marker, e) => {
@@ -156,16 +161,16 @@ import * as DataAPI from './utils/DataAPI'
                 // }
 
     //handle the list-item when is clicked
-    handleItemClick = (location) => {
-        console.log(location)
-        // console.log("propsItemClick:",props)
-        // console.log("locationItemClick:",location)
-        // console.log("eItemClick: ",e)
+    handleItemClick = (props, location, e) => {
+        //console.log(props, location, e)
+        console.log("propsItemClick:",props)
+        console.log("locationItemClick:",location)
+        console.log("eItemClick: ",e)
 
-        // const marker = this.state.markers.find(marker => marker.id === location)
-        // console.log("marker:",marker)
+        const marker = this.state.markers.find(marker => marker.id === location.id)
+        console.log("Mymarker:",marker)
         
-        // this.handleMarkerClick(props,marker,e) 
+        this.handleMarkerClick(location,marker,e) 
               
 
         // let newCenter
