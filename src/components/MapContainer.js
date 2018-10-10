@@ -7,31 +7,41 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 //import InfoWindow from './InfoWindow'
  
 export class MapContainer extends Component {
-    state = {
+    constructor(props) {
+        super(props);
+        this.state = {
 
-        markerDetails: [] //marker info in detail for selected marker
-       
-    }
+            markerDetails: [], //marker info in detail for selected marker
+            markerObjects:[]
+        }
+        //this.getMarkerObject=this.getMarkerObject.bind(this)
 
-    infoWindowHasClosed = (props, marker, e) => {
-        this.setState({
-            showingInfoWindow: false, 
-            activeMarker: {},
-            selectedPlace: {}
-        })
-    }
+        // this.onMarkerMounted = element => {
+        //   this.setState(prevState => ({
+        //     markerObjects: [...prevState.markerObjects, element.marker]
+        //   }))
+        // };
+  }
+    
 
-      // makeMarkerIcon=(markerColor)=> {
-      //    var markerImage = 
-      //   {url: 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
-      //      '|40|_|%E2%80%A2',
-      //     size: new this.props.google.maps.Size(30, 39),
-      //     origin: new this.props.google.maps.Point(0, 0),
-      //     anchor: new this.props.google.maps.Point(10, 34),
-      //     scaledSize: new this.props.google.maps.Size(30, 39)}
-  
-      //       return markerImage;
-      // }
+    // infoWindowHasClosed = (props, marker, e) => {
+    //     this.setState({
+    //         showingInfoWindow: false, 
+    //         activeMarker: {},
+    //         selectedPlace: {}
+    //     })
+    // }
+
+
+    // componentDidUpdate() {
+    //     if (this.props.selectedItem) {
+    //         let selectedMarker = this.markers.find(m => 
+    //             return m.id === this.props.selectedItem)
+    //     }
+        
+    // }
+
+     
 // componentDidUpdate() {
 //     console.log(this.state.markers)
 //     const bounds = new window.google.maps.LatLngBounds()
@@ -63,13 +73,21 @@ export class MapContainer extends Component {
   // map.panToBounds(bounds);
 //}
 
+// getMarkerObject= () => { 
+//     this.props.getMarkerObjects(this.state.markerObjects)
+//     console.log("aaaaaaaaaaaaaaaa")
+// }
+
+
     render() {
+        //console.log("markerObjects:",this.state.markerObjects)
         // let details=(this.props.activeMarkerDetails !== undefined && 
         //     this.props.activeMarkerDetails !== null)?
         //     this.props.activeMarkerDetails : undefined
-                    let details=(this.props.selectedLocationDetails !== undefined && this.props.selectedLocationDetails !== null)?
-                        this.props.selectedLocationDetails : undefined
-console.log('details:',details)
+        let details=(this.props.selectedLocationDetails !== undefined && this.props.selectedLocationDetails !== null)?
+        this.props.selectedLocationDetails : undefined
+        //console.log('details:',details)
+        
         //let photo=details.bestPhoto
         let img
     if (details !== undefined && details !== null) {
@@ -80,6 +98,7 @@ console.log('details:',details)
             img=process.env.PUBLIC_URL+'/no-photo-available.jpg'
         }
     }
+
         
 
 // var bounds = new this.props.google.maps.LatLngBounds();
@@ -91,8 +110,17 @@ console.log('details:',details)
 //     }
 
 //var highlightedIcon = this.makeMarkerIcon('FFFF24')
+console.log("MAP:this.props.activeMarker;",this.props.activeMarker)
+console.log("MAP:this.props.activeMarker;",this.props.activeMarker.position)
+console.log("MAP:this.props.showingInfoWindow;",this.props.showingInfoWindow)
+console.log("MAP:this.props.selectedLocationId;",this.props.selectedLocationId)
 
-//console.log("markers_aaaa:",this.props.markers)
+let checkfilter = this.props.selectedLocationId? this.props.selectedLocationId: this.props.activeMarker.id
+console.log('checkfilter:',checkfilter)
+console.log('selectedLocationId:',this.props.selectedLocationId)
+//console.log('activeMarker.id:',this.props.activeMarker.id)
+
+console.log("markers_aaaa:",this.props.markers)
         return (
             
             <Map 
@@ -120,17 +148,21 @@ console.log('details:',details)
                {/* {this.props.markers && (
                     this.props.markers.map((marker, index) => (*/}
                 {this.props.markers && (
-                    this.props.markers.filter(marker => marker.isVisible).map((marker, index) => (
+                    this.props.markers.map((marker, index) => (
                         <Marker
+                        ref={this.props.onMarkerMounted}
                             key={index}
                             position={{lat: marker.lat, lng: marker.lng}}
                             title={marker.name}
                             name={this.props.getNewName(marker.name)}
                             id={marker.id}
                             onClick={(props, marker, e) => this.props.handleMarkerClick(props, marker, e)}
+                            //getMarkerObject={this.getMarkerObject}
+                            //getMarkerObjects={this.props.getMarkerObjects(this.state.markerObjects)}
                                 //onClick={(props, marker, e) => this.props.handleMarkerClick(props, marker, e)}
-                            //animation={this.state.activeMarker ? (location.id===this.state.activeMarker.id 
-                            //    ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP) : google.maps.Animation.DROP}
+                            
+                            animation={this.props.activeMarker ? (marker.id===this.props.activeMarker.id 
+                                ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP) : google.maps.Animation.DROP}
                                 //    animation={arr.length===1 ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP}
                                 //    position={{lat: marker.lat, lng: marker.lng}}
                                 //    title={marker.name}
@@ -148,19 +180,33 @@ console.log('details:',details)
                         />
                     ))
                 )}    
-                        
+                    { //this.props.showingInfoWindow && 
+                        // this.props.activeMarker && 
+
+                        // // (this.props.selectedLocationId || this.props.activeMarker )&&
+                        // // this.props.markers.filter(marker => marker.id === checkfilter)
+                        //  this.props.markers.filter(marker => marker.id === this.props.activeMarker.id)
+                        //  .map((marker,index) =>(
+                    
+                    //this.props.markers.filter(marker => marker.showingInfoWindow = true)
+                    //.map((marker, index) => (
+
                 <InfoWindow
-                   
+                   //key={index}
                     marker={this.props.activeMarker}
                     visible={this.props.showingInfoWindow}
+                    //position={{lat: this.props.activeMarker.position, lng: marker.lng}}
+                    //position={{lat: (marker.lat), lng: marker.lng}}
                     maxWidth={250}
-                   // onClose={(props, marker, e) => this.infoWindowHasClosed(props, marker, e)}
+                    pixelOffset={this.props.selectedLocationId?{width: 0, height: -30}:{width: 0, height: 0}}
+                    //zindex= {10}
+                    onClose={(props, marker, e) => this.props.infoWindowHasClosed(props, marker, e)}
                     >
                 
                     <div className="iw-container">
-                        <h4 className="iw-header">{details.name}</h4>
+                        <h4 className="iw-header">{this.props.getNewName(details.name)}</h4>
                         
-                        <p>{details.location!==undefined && details.location.address ? details.location.address : "What!!!!!!!!" }</p>
+                        <p>{details.location!==undefined && details.location.address ? details.location.address : "" }</p>
                         <p>{details.hours!==undefined && details.hours.timeframes[0].days ? "Days: "+details.hours.timeframes[0].days : "" }</p>
                         <p>{details.hours!==undefined && details.hours.status ? details.hours.status : "" }</p>
                         <p>{details.rating!==undefined && details.rating ? "Rating: "+details.rating : "" }</p>
@@ -173,7 +219,8 @@ console.log('details:',details)
                     </div>
                             
                 </InfoWindow> 
-
+        //))
+}
             </Map>
 
         );

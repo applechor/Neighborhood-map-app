@@ -6,7 +6,7 @@ class ListItems extends Component {
 
 	
   render() {
-  	console.log(this.props.locations)
+  	//console.log(this.props.locations)
     return (
       <div className="showing-list">
 
@@ -20,7 +20,7 @@ class ListItems extends Component {
 	      			tabIndex = {0}
 	      			aria-label = {this.props.getNewName(location.name)}
      			//onClick = {(props, e) => this.props.handleItemClick(props, location.id, e)}>
-onClick = {(event) => this.props.handleItemClick(event, this.props)}>
+onClick = {(event) => this.props.handleItemClick(event, location.id)}>
 
 	      			
       				{this.props.getNewName(location.name)}
