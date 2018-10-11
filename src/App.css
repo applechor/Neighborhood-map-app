@@ -81,6 +81,10 @@ html, body {
     /*overflow-y: scroll;*/
     
 }  
+#clear-list {
+    width: 100%;
+    /*padding: 6px;*/
+}
 
 .search-items {
     font-size: 16px;

@@ -73,10 +73,6 @@ export class MapContainer extends Component {
   // map.panToBounds(bounds);
 //}
 
-// getMarkerObject= () => { 
-//     this.props.getMarkerObjects(this.state.markerObjects)
-//     console.log("aaaaaaaaaaaaaaaa")
-// }
 
 
     render() {
@@ -110,17 +106,17 @@ export class MapContainer extends Component {
 //     }
 
 //var highlightedIcon = this.makeMarkerIcon('FFFF24')
-console.log("MAP:this.props.activeMarker;",this.props.activeMarker)
-console.log("MAP:this.props.activeMarker;",this.props.activeMarker.position)
-console.log("MAP:this.props.showingInfoWindow;",this.props.showingInfoWindow)
-console.log("MAP:this.props.selectedLocationId;",this.props.selectedLocationId)
+// console.log("MAP:this.props.activeMarker;",this.props.activeMarker)
+// console.log("MAP:this.props.activeMarker;",this.props.activeMarker.position)
+// console.log("MAP:this.props.showingInfoWindow;",this.props.showingInfoWindow)
+//console.log("MAP:this.props.selectedLocationId;",this.props.selectedLocationId)
 
-let checkfilter = this.props.selectedLocationId? this.props.selectedLocationId: this.props.activeMarker.id
-console.log('checkfilter:',checkfilter)
-console.log('selectedLocationId:',this.props.selectedLocationId)
+//let checkfilter = this.props.selectedLocationId? this.props.selectedLocationId: this.props.activeMarker.id
+//console.log('checkfilter:',checkfilter)
+//console.log('selectedLocationId:',this.props.selectedLocationId)
 //console.log('activeMarker.id:',this.props.activeMarker.id)
 
-console.log("markers_aaaa:",this.props.markers)
+//console.log("markers_aaaa:",this.props.markers)
         return (
             
             <Map 
@@ -157,26 +153,8 @@ console.log("markers_aaaa:",this.props.markers)
                             name={this.props.getNewName(marker.name)}
                             id={marker.id}
                             onClick={(props, marker, e) => this.props.handleMarkerClick(props, marker, e)}
-                            //getMarkerObject={this.getMarkerObject}
-                            //getMarkerObjects={this.props.getMarkerObjects(this.state.markerObjects)}
-                                //onClick={(props, marker, e) => this.props.handleMarkerClick(props, marker, e)}
-                            
-                            animation={this.props.activeMarker ? (marker.id===this.props.activeMarker.id 
-                                ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP) : google.maps.Animation.DROP}
-                                //    animation={arr.length===1 ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP}
-                                //    position={{lat: marker.lat, lng: marker.lng}}
-                                //    title={marker.name}
-                                //    name={this.props.getNewName(marker.name)}
-                                //    id={marker.id}
-                                //    onClick={this.onMarkerClick}
-                            
-
-                            // address={this.props.locations.location.address}
-                                
-                            //animation= {this.props.google.maps.Animation.DROP}
-                            //bounds={mapBounds}
-                            //icon={highlightedIcon}
-                             
+                            animation={this.props.activeMarker ? (marker.id === this.props.activeMarker.id ? '1' : '0') : '0'}
+                            //bounds={mapBounds}                            
                         />
                     ))
                 )}    
@@ -185,20 +163,20 @@ console.log("markers_aaaa:",this.props.markers)
 
                         // // (this.props.selectedLocationId || this.props.activeMarker )&&
                         // // this.props.markers.filter(marker => marker.id === checkfilter)
-                        //  this.props.markers.filter(marker => marker.id === this.props.activeMarker.id)
-                        //  .map((marker,index) =>(
+                          //this.props.markers.filter(marker => marker.id === this.props.activeMarker.id)
+                          //.map((marker,index) =>(
                     
                     //this.props.markers.filter(marker => marker.showingInfoWindow = true)
                     //.map((marker, index) => (
 
                 <InfoWindow
-                   //key={index}
+                   //key={marker.id}
                     marker={this.props.activeMarker}
                     visible={this.props.showingInfoWindow}
                     //position={{lat: this.props.activeMarker.position, lng: marker.lng}}
                     //position={{lat: (marker.lat), lng: marker.lng}}
                     maxWidth={250}
-                    pixelOffset={this.props.selectedLocationId?{width: 0, height: -30}:{width: 0, height: 0}}
+                    //pixelOffset={this.props.selectedLocationId?{width: 0, height: -30}:{width: 0, height: 0}}
                     //zindex= {10}
                     onClose={(props, marker, e) => this.props.infoWindowHasClosed(props, marker, e)}
                     >

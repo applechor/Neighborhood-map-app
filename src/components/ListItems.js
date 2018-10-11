@@ -6,12 +6,12 @@ class ListItems extends Component {
 
 	
   render() {
-  	//console.log(this.props.locations)
+  	console.log(this.props.locations)
     return (
       <div className="showing-list">
 
       	<ol className="list">
-      		{this.props.locations && 
+      		{//this.props.searchedResults && 
       			this.props.locations.map(location => (
       			<li 
 	      			key = {location.id} 
@@ -20,7 +20,7 @@ class ListItems extends Component {
 	      			tabIndex = {0}
 	      			aria-label = {this.props.getNewName(location.name)}
      			//onClick = {(props, e) => this.props.handleItemClick(props, location.id, e)}>
-onClick = {(event) => this.props.handleItemClick(event, location.id)}>
+					onClick = {this.props.handleItemClick.bind(this,location.id)}>
 
 	      			
       				{this.props.getNewName(location.name)}

@@ -23,13 +23,14 @@ import * as DataAPI from './utils/DataAPI'
         
         showingInfoWindow: false, // show info window
         activeMarker: {}, // marker info for selected marker
-        //selectedLocation: {}, // location info for selected marker
-        selectedLocationId: [],
+        selectedLocation: {}, // location info for selected marker
+        markerObjects:[],
         selectedLocationDetails: [], // details of selected location which is clicked 
         activeMarkerDetails: [],
-        markerObjects:{},
-        filterMarkerObj:{}
-
+        
+            filterMarkerObj:{},
+           
+            selectedLocationId: []
         }
         this.updateLocation=this.updateLocation.bind(this)
         this.getNewName= this.getNewName.bind(this)
@@ -45,13 +46,16 @@ import * as DataAPI from './utils/DataAPI'
         // };
 
     }
-        onMarkerMounted = element => {
-          //  console.log(element)
-          this.setState(prevState => ({
-            markerObjects: [...prevState.markerObjects, element.marker]
-          }))
-          //console.log(this.state.markerObjects)
-        };
+
+    onMarkerMounted = element => {
+        //console.log("element:",element)
+       // console.log("element.marker:",element.marker)
+      this.setState(prevState => ({
+        markerObjects: [...prevState.markerObjects, element]
+      }
+      ))
+     // console.log(this.state.markerObjects)
+    }
 //     componentWillMount() {
 //        let getMarkerObjects = (markerObjects) => {
 
@@ -104,13 +108,13 @@ import * as DataAPI from './utils/DataAPI'
                         id: venuesDetails.response.venue.id,
                         name: venuesDetails.response.venue.name,
                         lat: venuesDetails.response.venue.location.lat,
-                        lng: venuesDetails.response.venue.location.lng,
-                        showingInfoWindow: false,
-                        isVisible: true
+                        lng: venuesDetails.response.venue.location.lng
+                        //showingInfoWindow: false,
+                        //isVisible: true
                         
                     }
                     markers.push(marker)
-                   console.log("Tong",markers)
+                  // console.log("Tong",markers)
                     this.setState({
                         locations: listVenuesDetails,
                         markers: markers
@@ -128,9 +132,19 @@ import * as DataAPI from './utils/DataAPI'
     } // END componentDidMount
 
 
+  // clearFilterInput = () => {
+  //   // if the input is empty we don't want the map to rerender if we click the button
+  //   if (this.state.query === '')
+  //     return
+  //     // if its not empty, set it back to our original state
+  //   this.setState({
+  //     query: '',
+  //     filterResults: [...this.state.allRestaurants]
+  //   })
+  // }
 
 
-    // update Locations when already searched
+    // update Locations on the side bar while searching
     updateLocation = (searchedResults, query) => {
         if(query) {
             this.setState ((state) => ({
@@ -155,15 +169,6 @@ import * as DataAPI from './utils/DataAPI'
         return newName;
     }
 
-    // componentWillMount() {
-    //     let aa = this.getMarkerObjects(this.state.markerObjects)
-    //     console.log("aa:",aa)
-
-    //     this.setState({
-    //          markerObjects: aa
-    //      })
-    //     console.log("this.state.markers:",this.state.markers)
-    // }
     // closeAllInfo = () => {
     //     const markers = this.state.markers.map(marker => {
     //         //marker.isOpen = false,
@@ -171,38 +176,23 @@ import * as DataAPI from './utils/DataAPI'
     //         return marker;
     //     })
     //     this.setState({markers: Object.assign(this.state.markers, markers)})
-    //     console.log(this.state.markers)
+    //    // console.log(this.state.markers)
     // }
 
-    handleItemClick = (props, location, e) => {
-        
-        console.log("this.state.markers:", this.state.markers)
-        console.log("=======propsItemClick:=========",props)
-        console.log("locationItemClick:",location)
-        console.log("eItemClick: ",e)
+    handleItemClick = (locationId) => {
+        //console.log("=======propsItemClick:=========",locationId)
 
-        this.setState({selectedLocationId: location})
-        console.log("ItemClick:selectedLocationId:",this.state.selectedLocationId)
+        //this.setState({selectedLocationId: location})
+       // console.log("ItemClick:selectedLocationId:",this.state.selectedLocationId)
 
-        const marker = this.state.markers.find(marker => marker.id === location)
-        console.log("Mymarker:",marker)
-        //console.log("this.state.markerObjects:",this.state.markerObjects)
+        const marker = this.state.markers.find(marker => marker.id === locationId)
+        //console.log("Mymarker:",marker)
+        //console.log("---this.state.markerObjects:",this.state.markerObjects)
 
-        const filterMarkerObject = this.state.markerObjects.filter(markerObject => markerObject.id === marker.id)
-        console.log("Array:fileterMarkerObject:",filterMarkerObject)
+        const filterMarkerObject = this.state.markerObjects.filter(markerObject => markerObject.props.id === marker.id)
+        console.log("Object:fileterMarkerObject:",filterMarkerObject)
 
-        const filterMarkerObjectObj = filterMarkerObject[0]//Object.assign({}, filterMarkerObject)
-        console.log("Object:fileterMarkerObject:",filterMarkerObjectObj)
-
-        //this.setState({filterMarkerObj :filterMarkerObjectObj})
-        
-        this.setState({filterMarkerObj :filterMarkerObjectObj}, () => {
-            console.log("Callback:filterMarkerObj:",this.state.filterMarkerObj)
-            //this.handleMarkerClick(props,filterMarkerObjectObj,e) 
-        })
-         //console.log("filterMarkerObj:",this.state.filterMarkerObj)
-
-        this.handleMarkerClick(props,filterMarkerObjectObj,e) 
+        this.handleMarkerClick(filterMarkerObject[0].props,filterMarkerObject[0].marker) 
               
 
         // let newCenter
@@ -238,48 +228,31 @@ import * as DataAPI from './utils/DataAPI'
 //   //   this.foo();  
 //   // }
 // }
+
     //handle when a marker is clicked
     handleMarkerClick = (props, marker, e) => {
-        //this.closeAllInfo()
-         console.log("======propsMarkerClick:=======",props)
-         console.log("markerMarkerClick: ",marker)
-         //console.log("eMarkerClick: ",e)
-         let checkMarkerId
-         if(marker.id === undefined) {
-            checkMarkerId = marker[0].id
-         }else{
-            checkMarkerId = marker.id
-         }
+         //  console.log("======propsMarkerClick:=======",props)
+         // console.log("markerMarkerClick: ",marker)
+         
+         // let checkMarkerId
+         // if(marker.id === undefined) {
+         //    checkMarkerId = marker[0].id
+         // }else{
+         //    checkMarkerId = marker.id
+         // }
 
-         let details = this.state.locations.filter(location => location.id === checkMarkerId) 
-         //const marker2 = this.state.markers.find(marker2 => marker2.id === marker.id)
-         //console.log("locations:",this.state.locations)
-         //console.log("marker.id:",checkMarkerId)
-         //console.log("detailsMarkerClick;",details)
+         let details = this.state.locations.filter(location => location.id === marker.id) 
         
-        this.setState(
-
-            // (state) => ({
-            // activeMarker: state.filterMarkerObj
-            // },))
-            // console.log("activeMarkerMarkerClick: ",this.state.activeMarker)
-        
-            {
-            //selectedLocation: props,
+        this.setState({
+            selectedLocation: props,
             activeMarker: marker,
-            
+            //center: props.position,
             showingInfoWindow: true,
-            selectedLocationDetails: details[0]
-            }
-            ,() => { 
-            console.log("Callback:activeMarkerMarkerClick: ",this.state.activeMarker)
-            console.log("Callback:showingInfoWindow:",this.state.showingInfoWindow)
-            console.log("Callback:selectedLocationDetails:",this.state.selectedLocationDetails)
-            })
-        
-    }
+            selectedLocationDetails: details[0]    
+ 
+        })
 
-     
+     }
 
     //handle the list-item when is clicked
     
@@ -295,16 +268,19 @@ import * as DataAPI from './utils/DataAPI'
         if (this.state.showingInfoWindow) {
             this.setState({
                 showingInfoWindow: false,
-                activeMarker: null
+                activeMarker: {},//null,
+                selectedLocation: {},//null,
+                selectedLocationDetails: []
             })
         }
     }
     
     infoWindowHasClosed = (props, marker, e) => {
         this.setState({
+            selectedLocation: {},
             showingInfoWindow: false, 
             activeMarker: {},
-            selectedPlace: {}
+            selectedLocationDetails: []
         })
     }
 
@@ -327,7 +303,7 @@ import * as DataAPI from './utils/DataAPI'
                         handleItemClick = {this.handleItemClick}
                     />
                     <div id="map">
-                    {/*<ErrorBoundary>*/}
+                   
                     <MapContainer 
                         role ="application"
                         aria-label = "Google Map"
@@ -347,8 +323,9 @@ import * as DataAPI from './utils/DataAPI'
                         getMarkerObjects={this.getMarkerObjects}
                         onMarkerMounted={this.onMarkerMounted}
                         infoWindowHasClosed={this.infoWindowHasClosed}
+                        markerObjects={this.state.markerObjects}
                     />
-                {/*</ErrorBoundary>*/}
+               
                     </div>
                 </div>
           </div>
