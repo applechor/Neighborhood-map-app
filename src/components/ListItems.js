@@ -6,9 +6,27 @@ class ListItems extends Component {
 
 	
   render() {
-  	console.log(this.props.locations)
-    return (
-      <div className="showing-list">
+    return (    
+		<li 
+			className = "list-item"
+			id = {this.props.location.id} 
+			tabIndex = {0}
+			aria-label = {this.props.getNewName(this.props.location.name)}
+			onClick = {this.props.handleItemClick.bind(this,this.props.location.id)}
+			//onKeyPress = {this.props.handleKeyPress}
+		>
+			{this.props.getNewName(this.props.location.name)}
+		</li>
+
+    );
+  }
+}
+export default ListItems;
+
+
+
+{/*
+	<div className="showing-list">
 
       	<ol className="list">
       		{//this.props.searchedResults && 
@@ -25,35 +43,6 @@ class ListItems extends Component {
 	      			
       				{this.props.getNewName(location.name)}
       			</li>
-
-      		))}
-      	</ol>
-      </div>
-    );
-  }
-}
-//onClick = {this.props.handleItemClick}>
-export default ListItems;
-
-
-
-{/*
-	 <div className="showing-list">
-
-      	<ol className="list">
-      		{this.props.locations && 
-      			this.props.locations.map(location => (
-      				<ListItemsDetail 
-      				key = {location.id} 
-	      			className = "list-item"
-	      			id = {location.id} 
-	      			tabIndex = {0}
-	      			aria-label = {this.props.getNewName(location.name)}
-	      			onClick = {(props, location, e) => this.props.handleItemClick(this.props, location, e)}
-	      			getNewName = {this.props.getNewName}
-	      			locations = {this.props.locations}
-	      			/>
-      				
 
       		))}
       	</ol>

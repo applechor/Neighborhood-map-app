@@ -4,6 +4,7 @@
 // eslint-disable-line no-extend-native
 import React, { Component } from 'react';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+
 //import InfoWindow from './InfoWindow'
  
 export class MapContainer extends Component {
@@ -14,24 +15,8 @@ export class MapContainer extends Component {
             markerDetails: [], //marker info in detail for selected marker
             markerObjects:[]
         }
-        //this.getMarkerObject=this.getMarkerObject.bind(this)
 
-        // this.onMarkerMounted = element => {
-        //   this.setState(prevState => ({
-        //     markerObjects: [...prevState.markerObjects, element.marker]
-        //   }))
-        // };
   }
-    
-
-    // infoWindowHasClosed = (props, marker, e) => {
-    //     this.setState({
-    //         showingInfoWindow: false, 
-    //         activeMarker: {},
-    //         selectedPlace: {}
-    //     })
-    // }
-
 
     // componentDidUpdate() {
     //     if (this.props.selectedItem) {
@@ -73,27 +58,37 @@ export class MapContainer extends Component {
   // map.panToBounds(bounds);
 //}
 
-
-
     render() {
-        //console.log("markerObjects:",this.state.markerObjects)
-        // let details=(this.props.activeMarkerDetails !== undefined && 
-        //     this.props.activeMarkerDetails !== null)?
-        //     this.props.activeMarkerDetails : undefined
+        //console.log('locations:',this.props.locations)
+        let markers = []
+        if (this.props.locations !== undefined && this.props.locations !== null) {
+            this.props.locations.map(location => {
+                let marker = {
+                    id: location.id,
+                    name: location.name,
+                    lat: location.location.lat,
+                    lng: location.location.lng
+                }
+                markers.push(marker)
+                })
+        }
+        //console.log('markersInMap:',markers)
+        
+        // check data detials before show within infoWindow
         let details=(this.props.selectedLocationDetails !== undefined && this.props.selectedLocationDetails !== null)?
         this.props.selectedLocationDetails : undefined
         //console.log('details:',details)
         
         //let photo=details.bestPhoto
         let img
-    if (details !== undefined && details !== null) {
-        
-        if(details.bestPhoto!==undefined && details.bestPhoto!==null) {
-            img=`${details.bestPhoto.prefix}150x150${details.bestPhoto.suffix}`
-        } else {
-            img=process.env.PUBLIC_URL+'/no-photo-available.jpg'
+        if (details !== undefined && details !== null) {
+            
+            if(details.bestPhoto!==undefined && details.bestPhoto!==null) {
+                img=`${details.bestPhoto.prefix}150x150${details.bestPhoto.suffix}`
+            } else {
+                img=process.env.PUBLIC_URL+'/no-photo-available.jpg'
+            }
         }
-    }
 
         
 
@@ -105,18 +100,6 @@ export class MapContainer extends Component {
 //         bounds.extend(new google.maps.LatLng(lat, lng));
 //     }
 
-//var highlightedIcon = this.makeMarkerIcon('FFFF24')
-// console.log("MAP:this.props.activeMarker;",this.props.activeMarker)
-// console.log("MAP:this.props.activeMarker;",this.props.activeMarker.position)
-// console.log("MAP:this.props.showingInfoWindow;",this.props.showingInfoWindow)
-//console.log("MAP:this.props.selectedLocationId;",this.props.selectedLocationId)
-
-//let checkfilter = this.props.selectedLocationId? this.props.selectedLocationId: this.props.activeMarker.id
-//console.log('checkfilter:',checkfilter)
-//console.log('selectedLocationId:',this.props.selectedLocationId)
-//console.log('activeMarker.id:',this.props.activeMarker.id)
-
-//console.log("markers_aaaa:",this.props.markers)
         return (
             
             <Map 
@@ -132,21 +115,21 @@ export class MapContainer extends Component {
                 //onReady={this.adjustMap}
                //bounds={bounds}  
                 style={{
-                                    position: 'static',
-                                    width: '100%',
-                                    height: '100%',
-                                    marginBottom: '20px',
-                                    border: '1px solid grey',
-                                    boxSizing: 'border-box'
-                                 }}
+                    position: 'static',
+                    width: '100%',
+                    height: '100%',
+                    marginBottom: '20px',
+                    border: '1px solid grey',
+                    boxSizing: 'border-box'
+                 }}
             >
             
                {/* {this.props.markers && (
                     this.props.markers.map((marker, index) => (*/}
-                {this.props.markers && (
-                    this.props.markers.map((marker, index) => (
+                {markers && (
+                    markers.map((marker, index) => (
                         <Marker
-                        ref={this.props.onMarkerMounted}
+                            ref={this.props.onMarkerMounted}
                             key={index}
                             position={{lat: marker.lat, lng: marker.lng}}
                             title={marker.name}

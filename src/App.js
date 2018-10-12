@@ -6,6 +6,8 @@ import MapContainer from './components/MapContainer'
 import NavBar from './components/NavBar'
 import SearchBar from './components/SearchBar'
 import * as DataAPI from './utils/DataAPI'
+import escapeRegExp from 'escape-string-regexp'
+import sortBy from 'sort-by'
 //import * as ErrorBoundary from './components/ErrorBoundary'
 //import ListItems from './components/ListItems'
         
@@ -15,9 +17,10 @@ import * as DataAPI from './utils/DataAPI'
         this.state = {
         //filteredLocations: [], // list of all location in details which for filtering
         locations: [], // list of all location in details that was shown when no query in search input
+        originalLocations: [],
         markers: [],
-        zoom: 14,
-        defaultZoom: 10, // default of zoom
+        zoom: 13,
+        defaultZoom: 13, // default of zoom
         center: {lat: 18.787747, lng: 98.993128},
         defaultCenter: {lat: 18.787747, lng: 98.993128},
         
@@ -27,7 +30,8 @@ import * as DataAPI from './utils/DataAPI'
         markerObjects:[],
         selectedLocationDetails: [], // details of selected location which is clicked 
         activeMarkerDetails: [],
-        
+        query: "",
+
             filterMarkerObj:{},
            
             selectedLocationId: []
@@ -38,24 +42,9 @@ import * as DataAPI from './utils/DataAPI'
         this.handleItemClick= this.handleItemClick.bind(this)
         this.handleMapClick= this.handleMapClick.bind(this)
         this.onMarkerMounted= this.onMarkerMounted.bind(this)
-        
-        //  this.onMarkerMounted = element => {
-        //     this.setState(prevState => ({
-        //         markerObjects: [...prevState.markerObjects, element.marker]
-        //     }))
-        // };
 
     }
-
-    onMarkerMounted = element => {
-        //console.log("element:",element)
-       // console.log("element.marker:",element.marker)
-      this.setState(prevState => ({
-        markerObjects: [...prevState.markerObjects, element]
-      }
-      ))
-     // console.log(this.state.markerObjects)
-    }
+    
 //     componentWillMount() {
 //        let getMarkerObjects = (markerObjects) => {
 
@@ -92,7 +81,7 @@ import * as DataAPI from './utils/DataAPI'
         .then(listVenuesIds => {
 //console.log("listVenuesIds",listVenuesIds)
             let listVenuesDetails = []
-            let markers=[]
+           // let markers=[]
 
             listVenuesIds.map(listVenuesId => 
                 DataAPI.getDetail(listVenuesId)
@@ -104,20 +93,21 @@ import * as DataAPI from './utils/DataAPI'
                     listVenuesDetails.push(venuesDetails.response.venue)
                     //console.log("listVenuesDetails",listVenuesDetails)
 
-                    let marker = {
-                        id: venuesDetails.response.venue.id,
-                        name: venuesDetails.response.venue.name,
-                        lat: venuesDetails.response.venue.location.lat,
-                        lng: venuesDetails.response.venue.location.lng
+                    // let marker = {
+                    //     id: venuesDetails.response.venue.id,
+                    //     name: venuesDetails.response.venue.name,
+                    //     lat: venuesDetails.response.venue.location.lat,
+                    //     lng: venuesDetails.response.venue.location.lng
                         //showingInfoWindow: false,
                         //isVisible: true
                         
-                    }
-                    markers.push(marker)
+                   // }
+                   // markers.push(marker)
                   // console.log("Tong",markers)
                     this.setState({
                         locations: listVenuesDetails,
-                        markers: markers
+                        originalLocations: listVenuesDetails
+                       // markers: markers
                     
                     })
                   
@@ -131,6 +121,20 @@ import * as DataAPI from './utils/DataAPI'
 
     } // END componentDidMount
 
+    clearQuery = () => {
+        this.setState({
+            query: "",
+            locations: this.state.originalLocations,
+            zoom: this.state.defaultZoom,
+            center: this.state.defaultCenter,
+
+            showingInfoWindow: false,
+            activeMarker: {},//null,
+            selectedLocation: {},//null,
+            selectedLocationDetails: []
+ 
+        })
+    }
 
   // clearFilterInput = () => {
   //   // if the input is empty we don't want the map to rerender if we click the button
@@ -142,6 +146,60 @@ import * as DataAPI from './utils/DataAPI'
   //     filterResults: [...this.state.allRestaurants]
   //   })
   // }
+
+    // This function is responsible for getting all the markers from the component using ref
+    // The markers are then 'pushed' into the state.markers array using a setState with a prevState
+    // Without the prevState it will only 'push' the last marker, so this syntax in necessary
+    onMarkerMounted = element => {
+        console.log("element:",element)
+       //console.log("element.marker:",element.marker)
+      this.setState(prevState => ({
+        markerObjects: [...prevState.markerObjects, element]
+      }
+      ))
+      //console.log('markerObjects:',this.state.markerObjects)
+    }
+
+    handleSearchChange = (query) => {
+          this.setState({
+            query: query
+        })
+        //let results = this.showingLocations(query)
+        this.showingLocations(query)
+        //this.state.updateLocation(results, query)
+
+        // this.setState({
+        //     locations: results
+        // }, () => console.log("locations:",this.state.locations))
+    }
+
+    showingLocations = (query) => {
+        console.log("query:", query)
+        //console.log("location:", this.state.locations)
+        // if(this.state.locations!==undefined && this.state.locations.length>0) {
+        //     this.state.locations.sort(sortBy('name'))  
+    //     //console.log("this.state.locationsSortBy:",this.state.locations)
+    //     } 
+        let filterLocations =[]
+        
+        if (query) {
+            const match = new RegExp(escapeRegExp(query), 'i')
+            filterLocations = this.state.originalLocations.filter((location) => match.test(location.name))
+        } else { // if dont' have someone type
+            filterLocations = this.state.originalLocations
+        }
+            filterLocations.sort(sortBy('name'))
+        console.log("filterLocations:",filterLocations)
+
+         //return filterLocations;
+        this.setState({locations: filterLocations},() => {console.log('locations:',this.state.locations)})
+        console.log('locations:',this.state.locations)
+
+     }
+
+        
+
+    
 
 
     // update Locations on the side bar while searching
@@ -180,19 +238,22 @@ import * as DataAPI from './utils/DataAPI'
     // }
 
     handleItemClick = (locationId) => {
-        //console.log("=======propsItemClick:=========",locationId)
 
-        //this.setState({selectedLocationId: location})
-       // console.log("ItemClick:selectedLocationId:",this.state.selectedLocationId)
+        const marker = this.state.locations.find(location => location.id === locationId)
+        console.log("=Mymarker:",marker)
+        console.log("=this.state.markerObjects:",this.state.markerObjects)
 
-        const marker = this.state.markers.find(marker => marker.id === locationId)
-        //console.log("Mymarker:",marker)
-        //console.log("---this.state.markerObjects:",this.state.markerObjects)
-
-        const filterMarkerObject = this.state.markerObjects.filter(markerObject => markerObject.props.id === marker.id)
+        
+        const filterMarkerObject = this.state.markerObjects.filter(markerObject => markerObject !== null)
+        .filter(markerObject => markerObject.props.id === marker.id)
         console.log("Object:fileterMarkerObject:",filterMarkerObject)
-
         this.handleMarkerClick(filterMarkerObject[0].props,filterMarkerObject[0].marker) 
+        
+
+        // const filterMarkerObject = this.state.markerObjects.map(markerObject => markerObject.props.id === marker.id)
+        // console.log("Object:fileterMarkerObject:",filterMarkerObject)
+
+        //this.handleMarkerClick(filterMarkerObject[0].props,filterMarkerObject[0].marker) 
               
 
         // let newCenter
@@ -207,46 +268,21 @@ import * as DataAPI from './utils/DataAPI'
         // })
         
     }
-// componentDidUpdate(prevProps, prevState) {
-//     console.log("prevProps:",prevProps)
-//     console.log("prevState:",prevState)
-//      console.log("this.state.filterMarkerObj:",this.state.filterMarkerObj)
-//     console.log("prevState.filterMarkerObj:",prevState.filterMarkerObj)
-//     if (this.state.filterMarkerObj !== prevState.filterMarkerObj) {
-//         this.setState({
-//             activeMarker: this.state.filterMarkerObj,
-//             showingInfoWindow: true
 
-//         })
-//          console.log('===NewUpdateActiveMarker:',this.state.activeMarker)
-//     console.log('===NewUpdateshowingInfoWindow:',this.state.showingInfoWindow)
-//     console.log('===NewUpdateselectedLocationDetails:',this.state.selectedLocationDetails)
-//         this.handleMarkerClick(this.state.filterMarkerObj.location,this.state.filterMarkerObj)
-//     }
-   
-//   // if (this.state.value > prevState.value) {
-//   //   this.foo();  
-//   // }
-// }
 
     //handle when a marker is clicked
     handleMarkerClick = (props, marker, e) => {
-         //  console.log("======propsMarkerClick:=======",props)
-         // console.log("markerMarkerClick: ",marker)
-         
-         // let checkMarkerId
-         // if(marker.id === undefined) {
-         //    checkMarkerId = marker[0].id
-         // }else{
-         //    checkMarkerId = marker.id
-         // }
+        console.log("===MarkerClick:props:",props)
+        console.log("===MarkerClick:marker:",marker)
+        console.log("===MarkerClick:e:",e)
 
          let details = this.state.locations.filter(location => location.id === marker.id) 
         
         this.setState({
             selectedLocation: props,
             activeMarker: marker,
-            //center: props.position,
+            center: props.position,
+            zoom: 17,
             showingInfoWindow: true,
             selectedLocationDetails: details[0]    
  
@@ -274,7 +310,9 @@ import * as DataAPI from './utils/DataAPI'
             })
         }
     }
-    
+
+    // This function runs when the close button is clicked on the InfoWindow or when a marker
+    // Is clicked and another InfoWindow is open from another marker
     infoWindowHasClosed = (props, marker, e) => {
         this.setState({
             selectedLocation: {},
@@ -285,8 +323,10 @@ import * as DataAPI from './utils/DataAPI'
     }
 
     render() {
-        //console.log(this.state.markerObjects)
-         
+        
+         if(this.state.locations!==undefined && this.state.locations.length>0) {
+             this.state.locations.sort(sortBy('name'))
+         }
         return (
 
             <div className = "App" role = "main">
@@ -301,6 +341,9 @@ import * as DataAPI from './utils/DataAPI'
                         updateLocation = {this.updateLocation}
                         getNewName = {this.getNewName}
                         handleItemClick = {this.handleItemClick}
+                        query = {this.state.query}
+                        handleSearchChange = {this.handleSearchChange}
+                        clearQuery = {this.clearQuery}
                     />
                     <div id="map">
                    
@@ -312,7 +355,7 @@ import * as DataAPI from './utils/DataAPI'
                         zoom = {this.state.zoom}
                         getNewName = {this.getNewName}
                         bounds={this.state.bounds}
-                        markers={this.state.markers}
+                        //markers={this.state.markers}
                         handleMarkerClick={this.handleMarkerClick}
                         handleMapClick={this.handleMapClick}
                         showingInfoWindow={this.state.showingInfoWindow}

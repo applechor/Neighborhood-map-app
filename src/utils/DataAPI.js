@@ -24,7 +24,7 @@ const version ="20180323"// from other1
 const latlang = "18.787747,98.993128"
 const query = "coffee"
 const nearPlace = "Chiang Mai, Thailand"
-const number_of_results = "3"
+const number_of_results = "10"
 
 // function handleError(response) {
 // 	if(!response.ok) {
