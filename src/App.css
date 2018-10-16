@@ -45,45 +45,86 @@ html, body {
 .main-container{
     display: flex;
     flex-flow: row nowrap;
-    height: 100vh;
-    width: 100%;
+    height: 100vh;/*100vh;*/
+    width: 100%/*100%;*/
 }
-#map {
+.map {
+    /*height: 100px;
+    width: 100px;*/ /**100vw75%*/
+    width: calc(100vw);
+    height: calc(100vh) ;
+    /*width: calc(100vw - 350px) !important;
+    height: calc(100vh - 100px) !important;
+    margin: 0 0 45px 0;
+    position: absolute;
+    right: 0;
+    transition: all 0.3s ease;*/
+}
+.map-container {
+    /*width: 100px;
+    height: 100%;
+    display: block;
+    box-sizing: border-box;
+    position: relative;*/
+    display: flex;
+    /*justify-content: center;*/
+    vertical-align: middle;
     height: 100vh;
-    width: 100vw; /**75%*/
-
+    width: 100vw;
+    /*padding-top: 56px;*/
 }
 
 .header {
     /*width: 100%;*/
     /*display: block;*/
 }
-.header_menu {
+.header-menu {
     display: inline-block;
     font-size: 2em;
     float: left;
-    margin: 17px 7px 10px;
+    margin: 13px 17px 10px;
+    cursor: pointer;
 }
 .header-title {
     display: inline-block;
+    margin: 17px 0;
+    font-size: 28px;
 }
 
-.navbar {
-    width: 100%;
+#sidebar-search{
+    /*width: 100%;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto;*/
+    z-index: 10;
+    background-color: #fff;
+    width: 300px;
+    height: 100%;
+    position: absolute;
+    /* This trasform moves the drawer off canvas. */
+    transform: translate(-300px, 0);
+    /* Optionally, we animate the drawer. */
+    transition: transform 0.3s ease;
+    visibility: hidden;
 }   
 
-.sidebar-search {
+#sidebar-search.open {
+    transform: translate(0, 0);
+    height: 100%;
+    visibility: visible;
+
+}
+
+/*.sidebar-search {
     display: flex;
     flex-flow: column wrap;
-    width: 350px; /* 350px 100%*/
-    /*height: 100%;*/
-    overflow-y: scroll;
+    width: 300px; /* 350px 100%*/
+    /*height: 100%;*
+    overflow-y: auto;/* scroll;
     
-}  
+} */ 
 #clear-list {
     width: 100%;
+    cursor: pointer;
     /*padding: 6px;*/
 }
 
@@ -91,13 +132,17 @@ html, body {
     font-size: 16px;
     padding: 5px;
     width: 100%;
+    /*overflow-y: scroll;*/
+}
+.showing-list {
+    /*overflow-y: scroll;*/
 }
 .list {
-    padding-left: 10px;
+    padding: 0 10px;
 }
 .list-item {
     list-style-type: none;
-    padding: 0.5em;
+    padding: 0.3em;
     /*margin-bottom: 1em;*/
     margin: 5px;
     font-size: 14px;
@@ -106,4 +151,143 @@ html, body {
     border: 2px solid #ccc;
 }
 
+.list-item:hover {
+    text-decoration: underline;
+    color: #212121;
 
+}
+.iw-container {
+    overflow: auto;
+    display: flex;
+    /*flex-flow: column;*/
+}
+.iw-content {
+    /*display: inline-block;*/
+    margin: 7px 0 0 10px;
+     /*margin: 0;*/
+    text-align: left;
+}
+.iw-content p {
+    margin: 8px 0;
+}
+
+.iw-photo {
+    /*vertical-align: middle;*/
+    /*float: left;*/
+    /*display: inline-block;*/
+ 
+}
+.iw-photo img {
+    /*float: left;*/
+    /*display: block*/
+    margin: 7% 0 5%;
+
+    /*margin: 0;*/
+}
+.iw-title {
+    
+    font-size: 14px;
+    /*margin: 7% 0;*/
+    margin: 3% 0;
+}
+
+.close-btn {
+    /*background: none; 
+    display: block; 
+    border: 0px; 
+    margin: 0px; 
+    padding: 0px; 
+    position: absolute; 
+    cursor: pointer; 
+    user-select: none; 
+    top: 0px; 
+    right: 0px; 
+    width: 37px; 
+    height: 33px;*/
+    width: 13px; 
+    height: 13px; 
+    overflow: hidden; 
+    position: absolute; 
+    opacity: 0.5; 
+    right: 0; 
+    top: 0; 
+    z-index: 10000; 
+    cursor: pointer;
+}
+footer {
+  border-top: 1px solid #E0E0E0;
+  padding: 1em;
+  width: 100%;
+  /*font-size: 13px;*/
+}
+footer p {
+  margin: 0;
+}
+
+@media screen and (max-width: 400px) {
+    .header-title {
+        font-size: 16px
+    }
+    .header-menu {
+        font-size: 1.25em;
+        margin: 13px 5px 10px;
+    }
+}
+
+@media screen and (min-width: 401px) and (max-width: 550px){
+    .header-title {
+        font-size: 20px
+    }
+    .header-menu {
+        font-size: 1.5em;
+        margin: 13px 10px 10px;
+    }
+}
+
+@media screen and (min-width: 551px) and (max-width: 650px){
+    .header-title {
+        font-size: 24px
+    }
+    .header-menu {
+        font-size: 1.75em;
+        margin: 13px 5px 10px;
+    }
+}
+
+@media screen and (min-width: 549px) {}
+
+@media screen and (min-width: 549px) {}
+
+/*@media screen and (max-width: 549px) {
+    #sidebar-search{
+    /*width: 100%;
+    margin-left: auto;
+    margin-right: auto;*
+    z-index: 10;
+    background-color: #fff;
+    width: 300px;
+    height: 100%;
+    position: absolute;
+     This trasform moves the drawer off canvas. 
+    transform: translate(-300px, 0);
+    /* Optionally, we animate the drawer. *
+    transition: transform 0.3s ease;
+}   
+
+#sidebar-search.open {
+    transform: translate(0, 0);
+    height: 100%;
+
+}
+
+}*/
+
+/*
+@media screen and (min-width: 850px) {
+    main, .header, .main-container, .search-bar-container, .map-container  {
+        width: 850px;
+        margin-left: auto;
+        margin-right: auto; 
+    }
+  
+}*/

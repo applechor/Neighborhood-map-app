@@ -8,58 +8,23 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 //import InfoWindow from './InfoWindow'
  
 export class MapContainer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
+    
+//https://github.com/fullstackreact/google-maps-react/issues/63 
+componentDidUpdate() {
+    const allbounds = new window.google.maps.LatLngBounds()
+    this.props.bounds.map((bound, i) => {
+        allbounds.extend(new window.google.maps.LatLng(
+            bound.lat,
+            bound.lng
+  ));
+});
+    this.refs.resultMap.map.fitBounds(allbounds)
+}
 
-            markerDetails: [], //marker info in detail for selected marker
-            markerObjects:[]
-        }
-
-  }
-
-    // componentDidUpdate() {
-    //     if (this.props.selectedItem) {
-    //         let selectedMarker = this.markers.find(m => 
-    //             return m.id === this.props.selectedItem)
-    //     }
-        
-    // }
-
-     
-// componentDidUpdate() {
-//     console.log(this.state.markers)
-//     const bounds = new window.google.maps.LatLngBounds()
-//     this.props.markers.map((result) => {
-//         bounds.extend(new window.google.maps.LatLng(
-//             this.props.markers.lat,
-//             this.props.markers.lng
-//         ));
-//     });
-          
-//     this.refs.resultMap.map.fitBounds(bounds)
-// }
-// adjustMap(mapProps, map) {
-//     console.log("mapProps:", mapProps)
-//     console.log("map:", map)
-
-//   const {google, markers} = mapProps;
-//   const bounds = new google.maps.LatLngBounds();
-// //console.log(this.props.markers)
-//   this.props.markers.forEach(marker => {
-
-//     const {lat, lng} = marker;
-//     console.log(marker.lat)
-
-//     bounds.extend(new google.maps.LatLng(lat, lng));
-//   });
-
-//   map.fitBounds(bounds);
-  // map.panToBounds(bounds);
-//}
 
     render() {
         //console.log('locations:',this.props.locations)
+        //console.log('bounds:',this.props.bounds)
         let markers = []
         if (this.props.locations !== undefined && this.props.locations !== null) {
             this.props.locations.map(location => {
@@ -84,27 +49,30 @@ export class MapContainer extends Component {
         if (details !== undefined && details !== null) {
             
             if(details.bestPhoto!==undefined && details.bestPhoto!==null) {
-                img=`${details.bestPhoto.prefix}150x150${details.bestPhoto.suffix}`
+                img=`${details.bestPhoto.prefix}130x130${details.bestPhoto.suffix}`
             } else {
                 img=process.env.PUBLIC_URL+'/no-photo-available.jpg'
             }
         }
-
+        //var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        //var labelIndex = 0;
         
 
-// var bounds = new this.props.google.maps.LatLngBounds();
-// console.log(this.props.markers)
-//     for (var i = 0; i < this.props.markers.length; i++) {
-//         const {lat, lng} = this.props.markers
-//         console.log(this.props.markers.lat)
-//         bounds.extend(new google.maps.LatLng(lat, lng));
-//     }
+// var abounds = new this.props.google.maps.LatLngBounds();
+ //console.log(this.props.bounds)
+
+    // for (var i = 0; i < this.props.bounds.length; i++) {
+    //     const {lat, lng} = this.props.bounds
+    //     console.log(this.props.bounds.lat)
+    //     abounds.extend(new google.maps.LatLng(lat, lng));
+//    }
 
         return (
             
             <Map 
                 google={this.props.google}
-               // ref={"resultMap"}
+                ref="resultMap"
+                className={'map'}
                 initialCenter={{
                     lat: 18.787747,
                     lng: 98.993128
@@ -113,15 +81,15 @@ export class MapContainer extends Component {
                 zoom={this.props.zoom}
                 onClick={this.props.handleMapClick}
                 //onReady={this.adjustMap}
-               //bounds={bounds}  
-                style={{
-                    position: 'static',
-                    width: '100%',
-                    height: '100%',
-                    marginBottom: '20px',
-                    border: '1px solid grey',
-                    boxSizing: 'border-box'
-                 }}
+                //bounds={this.state.bounds}  
+                //  style={{
+                //     position: 'relative',
+                //     width: '100vw',
+                //     height: '100vh',
+                //     marginBottom: '20px',
+                //     border: '1px solid grey',
+                //     boxSizing: 'border-box'
+                // }}
             >
             
                {/* {this.props.markers && (
@@ -135,53 +103,53 @@ export class MapContainer extends Component {
                             title={marker.name}
                             name={this.props.getNewName(marker.name)}
                             id={marker.id}
+                            //label={{text: labels[labelIndex++ % labels.length], fontWeight: "bold"}}
                             onClick={(props, marker, e) => this.props.handleMarkerClick(props, marker, e)}
                             animation={this.props.activeMarker ? (marker.id === this.props.activeMarker.id ? '1' : '0') : '0'}
                             //bounds={mapBounds}                            
                         />
                     ))
                 )}    
-                    { //this.props.showingInfoWindow && 
-                        // this.props.activeMarker && 
-
-                        // // (this.props.selectedLocationId || this.props.activeMarker )&&
-                        // // this.props.markers.filter(marker => marker.id === checkfilter)
-                          //this.props.markers.filter(marker => marker.id === this.props.activeMarker.id)
-                          //.map((marker,index) =>(
                     
-                    //this.props.markers.filter(marker => marker.showingInfoWindow = true)
-                    //.map((marker, index) => (
-
                 <InfoWindow
                    //key={marker.id}
                     marker={this.props.activeMarker}
                     visible={this.props.showingInfoWindow}
                     //position={{lat: this.props.activeMarker.position, lng: marker.lng}}
                     //position={{lat: (marker.lat), lng: marker.lng}}
-                    maxWidth={250}
+                    maxWidth={300}
                     //pixelOffset={this.props.selectedLocationId?{width: 0, height: -30}:{width: 0, height: 0}}
                     //zindex= {10}
                     onClose={(props, marker, e) => this.props.infoWindowHasClosed(props, marker, e)}
+                    onKeyPress={(props, marker, e) => this.props.infoWindowHasClosed(props, marker, e)}
                     >
-                
+                    {this.props.errMsg!=="" ? this.props.errMsg :
                     <div className="iw-container">
-                        <h4 className="iw-header">{this.props.getNewName(details.name)}</h4>
-                        
-                        <p>{details.location!==undefined && details.location.address ? details.location.address : "" }</p>
-                        <p>{details.hours!==undefined && details.hours.timeframes[0].days ? "Days: "+details.hours.timeframes[0].days : "" }</p>
-                        <p>{details.hours!==undefined && details.hours.status ? details.hours.status : "" }</p>
-                        <p>{details.rating!==undefined && details.rating ? "Rating: "+details.rating : "" }</p>
-                        <img 
-                            className="iw-photo" 
+                        <div className="iw-photo" tabIndex="0">
+                            <img 
+                             
                             src={img} 
                             alt={details.description ? details.description : details.name}
-                            tabIndex={0}
+                            //aria-lable={details.description ? details.description : details.name}
+                            tabIndex="0"
                         />
+                        </div>
+
+                        <div className="iw-content" tabIndex="0">
+                            <h4 className="iw-title">{this.props.getNewName(details.name)}</h4>
+                            <p>{details.location!==undefined && details.location.address ? details.location.address : "" }</p>
+                            <p>{details.hours!==undefined && details.hours.timeframes[0].days ? "Days: "+details.hours.timeframes[0].days : "" }</p>
+                            <p>{details.hours!==undefined && details.hours.status ? details.hours.status : "" }</p>
+                            <p>{details.rating!==undefined && details.rating ? "Rating: "+details.rating : "" }</p>
+                        </div>
+
+                        
+                        
+                        
                     </div>
-                            
+                       }     
                 </InfoWindow> 
-        //))
-}
+        
             </Map>
 
         );
@@ -197,6 +165,13 @@ export default GoogleApiWrapper({
 
 /*********************************************************
 ** BACK UP
+
+
+<button className="close-btn" draggable="false" title="Close" aria-label="Close info window" type="button" 
+                        onKeyPress={this.props.handleCloseBtn}>
+                        x
+                        </button>
+
 
 export class MapContainer extends Component {
     state = {

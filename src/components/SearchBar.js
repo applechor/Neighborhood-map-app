@@ -1,18 +1,69 @@
 import React, { Component } from 'react';
-import escapeRegExp from 'escape-string-regexp'
-import sortBy from 'sort-by'
 import ListItems from './ListItems'
 
 class searchBar extends Component {
-    // state = {
-    //     query: "",
-    //     searchedResults: []
-    // }
 
- handleChange = (query) => {
+    handleChange = (query) => {
         this.props.handleSearchChange(query)
-         }
- //    
+    }
+ 
+    render() {    
+
+        return (
+          <div id="sidebar-search" className={this.props.toggleMenu}>
+          
+          	<input 
+          		className = "search-items"
+          		type = "text"
+                role = "search"
+                aria-label = "enter coffee shop name"
+                tabIndex="0"
+          		placeholder = "Search coffee shop name..."
+          		value={this.props.query}
+          		onChange = {(event) => this.handleChange(event.target.value)}
+          	/>
+            <input 
+                id="clear-list" 
+                type="button" 
+                value="Clear Search"
+                onClick={this.props.clearQuery}
+                aria-label="clear search"
+                //role="button"
+            />
+            <div className="showing-list">
+
+                <ol className="list" //role="list"
+                >
+                    {//this.props.searchedResults && 
+                        this.props.locations.map(location => (
+                            <ListItems
+                                key = {location.id}
+                                location = {location}
+                                getNewName = {this.props.getNewName}
+                                handleItemClick = {this.props.handleItemClick}
+                                toggleMenu={this.props.toggleMenu}
+                                //role="list item"
+                            />
+      
+
+                    ))}
+                </ol>
+            </div>
+            <div className="errMsg">
+            <p>{this.props.errMsg!==""?this.props.errMsg:""}</p>
+            </div>
+
+          
+          </div>
+        );
+    }
+}
+
+export default searchBar;
+
+{/*
+
+    //    
  //    updateQuery = (query) => {
  //        this.setState({ query: query})
  //    }
@@ -75,8 +126,6 @@ class searchBar extends Component {
   //   })
    }
 
-    render() {    
-
     // if(this.props.locations!==undefined && this.props.locations.length>0) {
     //         this.props.locations.sort(sortBy('name'))  
     //     //console.log("this.props.locationsSortBy:",this.props.locations)
@@ -99,55 +148,8 @@ class searchBar extends Component {
         // }
         // console.log("filterLocations:",filterLocations)
         
-        
-        
-     
 
-        return (
-          <div className = "sidebar-search">
-          
-          	<input 
-          		className = "search-items"
-          		type = "text"
-                role = "search"
-                aria-label = "enter coffee shop name"
-          		placeholder = "Search coffee shop name..."
-          		value={this.props.query}
-          		onChange = {(event) => this.handleChange(event.target.value)}
-          	/>
-            <input 
-                id="clear-list" 
-                type="button" 
-                value="Clear"
-                onClick={this.props.clearQuery}
-            />
-            <div className="showing-list">
 
-                <ol className="list">
-                    {//this.props.searchedResults && 
-                        this.props.locations.map(location => (
-                            <ListItems
-                                key = {location.id}
-                                location = {location}
-                                getNewName = {this.props.getNewName}
-                                handleItemClick = {this.props.handleItemClick}
-                                
-                            />
-      
-
-                    ))}
-                </ol>
-            </div>
-
-          
-          </div>
-        );
-    }
-}
-
-export default searchBar;
-
-{/*
 return (
           <div className = "sidebar-search">
           
@@ -177,4 +179,5 @@ return (
           
           </div>
         );
-    }*/}
+    }
+*/}

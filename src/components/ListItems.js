@@ -10,10 +10,12 @@ class ListItems extends Component {
 		<li 
 			className = "list-item"
 			id = {this.props.location.id} 
-			tabIndex = {0}
+			tabIndex = "0"
 			aria-label = {this.props.getNewName(this.props.location.name)}
+			// aria-hidden={this.props.toggleMenu===""?:}
 			onClick = {this.props.handleItemClick.bind(this,this.props.location.id)}
-			//onKeyPress = {this.props.handleKeyPress}
+			//onKeyPress = {this.props.handleKeyPress.bind(this,this.props.location.id)}
+			onKeyPress = {this.props.handleItemClick.bind(this,this.props.location.id)}
 		>
 			{this.props.getNewName(this.props.location.name)}
 		</li>

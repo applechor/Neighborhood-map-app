@@ -22,9 +22,10 @@ const client_secret = "HU11MC3YLS3HUR1SYXZGB0FFKBX5SD2TKRAWYADP1F21KQ3E"// from 
 const version ="20180323"// from other1
 //const version = "20180708"// from other2
 const latlang = "18.787747,98.993128"
-const query = "coffee"
+const query = "coffee shop"
 const nearPlace = "Chiang Mai, Thailand"
-const number_of_results = "10"
+const number_of_results = "3"
+
 
 // function handleError(response) {
 // 	if(!response.ok) {
