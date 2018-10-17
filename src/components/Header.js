@@ -2,24 +2,22 @@ import React, { Component } from 'react';
 
 class Header extends Component {
   render() {
-    return (
+  	const {toggleMenu, onClickMenu} = this.props
 
-      	<div className="header">
-      		<h1 className="header-title"
-      		tabIndex="0"> Coffee Shops in Chiang Mai, Thailand </h1>
+    return (
+      	<div className="header" role="banner">
+      		<h1 
+      			className="header-title"
+      			tabIndex="0"> Coffee Shops in Chiang Mai, Thailand </h1>
 			<a 
 				className="header-menu" 
-				//role="navigation"
 				tabIndex="0"
-				aria-label={this.props.toggleMenu === "open"?"collapse side panel": "expand side panel for searching"}
-				title={this.props.toggleMenu === "open"?"collapse side panel": "expand side panel"}
-				onClick={this.props.onClickMenu}
-				onKeyPress={this.props.onClickMenu}
-
+				aria-label={toggleMenu==="open"?"collapse side panel when do not want search":"expand side panel for searching"}
+				title={toggleMenu==="open"?"collapse side panel":"expand side panel"}
+				onClick={onClickMenu}
+				onKeyPress={onClickMenu}
 			>&#9776;</a>
-
-      		{/*<i className="material-icons" style={{lineHeight: "inherit"}}>menu</i>*/}
-      </div>
+      	</div>
     );
   }
 }

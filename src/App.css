@@ -1,5 +1,6 @@
 .App {
     text-align: center;
+
 }
 
 .App-logo {
@@ -30,6 +31,7 @@
 /*-----------------------------------------------------*/
 html {
   box-sizing: border-box;
+
 }
 
 *, *:before, *:after {
@@ -40,13 +42,15 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+
 }
 
 .main-container{
     display: flex;
     flex-flow: row nowrap;
     height: 100vh;/*100vh;*/
-    width: 100%/*100%;*/
+    width: 100%;/*100%;*/
+    
 }
 .map {
     /*height: 100px;
@@ -75,6 +79,7 @@ html, body {
 }
 
 .header {
+    /*background-color: rgba(255, 255, 128, .5);*/
     /*width: 100%;*/
     /*display: block;*/
 }
@@ -145,15 +150,18 @@ html, body {
     padding: 0.3em;
     /*margin-bottom: 1em;*/
     margin: 5px;
-    font-size: 14px;
+    font-size: 15px;
     text-align: left;
     cursor: pointer;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
 }
 
 .list-item:hover {
     text-decoration: underline;
-    color: #212121;
+    /*color: #212121;*/
+    background-color:rgba(255, 255, 128, .5);
+    /*background-color: #7FC9FF;*/
+    /*color: #0026FF;*/
 
 }
 .iw-container {
@@ -167,8 +175,12 @@ html, body {
      /*margin: 0;*/
     text-align: left;
 }
+
 .iw-content p {
     margin: 8px 0;
+}
+.iw-content p:hover {
+    color: #0026FF;
 }
 
 .iw-photo {
@@ -189,6 +201,9 @@ html, body {
     font-size: 14px;
     /*margin: 7% 0;*/
     margin: 3% 0;
+}
+.iw-title:hover {
+   color: #0026FF;
 }
 
 .close-btn {
@@ -218,7 +233,7 @@ footer {
   border-top: 1px solid #E0E0E0;
   padding: 1em;
   width: 100%;
-  /*font-size: 13px;*/
+  font-size: 13px;
 }
 footer p {
   margin: 0;
@@ -232,6 +247,9 @@ footer p {
         font-size: 1.25em;
         margin: 13px 5px 10px;
     }
+    .list-item {
+        font-size: 14px;
+    }
 }
 
 @media screen and (min-width: 401px) and (max-width: 550px){
@@ -242,6 +260,9 @@ footer p {
         font-size: 1.5em;
         margin: 13px 10px 10px;
     }
+    .list-item {
+        font-size: 14px;
+    }
 }
 
 @media screen and (min-width: 551px) and (max-width: 650px){
@@ -251,6 +272,9 @@ footer p {
     .header-menu {
         font-size: 1.75em;
         margin: 13px 5px 10px;
+    }
+    .list-item {
+        font-size: 15px;
     }
 }
 
