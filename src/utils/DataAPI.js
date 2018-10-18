@@ -14,7 +14,7 @@ const version ="20180323"// from other1
 const latlang = "18.787747,98.993128"
 const query = "coffee shop"
 const nearPlace = "Chiang Mai, Thailand"
-const number_of_results = "3"
+const number_of_results = "13"
 
 // fetch venues data in details by passing venueID
 export const getDetail = (venueId) =>

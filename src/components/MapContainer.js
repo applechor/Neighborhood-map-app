@@ -4,11 +4,11 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
  
 class MapContainer extends Component {
 
-// fitbound or center the map to show all markers
-// https://github.com/fullstackreact/google-maps-react/issues/63 
+    // fitbound or center the map to show all markers
+    // https://github.com/fullstackreact/google-maps-react/issues/63 
     componentDidUpdate() {
         const allbounds = new window.google.maps.LatLngBounds()
-        this.props.bounds.map((bound, i) => {
+        this.props.bounds.forEach((bound, i) => {
             allbounds.extend(new window.google.maps.LatLng(
                 bound.lat,
                 bound.lng
@@ -23,7 +23,7 @@ class MapContainer extends Component {
         // create markers using locations data
         let markers = []
         if (locations !== undefined && locations !== null) {
-            locations.map(location => {
+            locations.forEach(location => {
                 let marker = {
                     id: location.id,
                     name: location.name,

@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 class ListItems extends Component {
 	render() {
-		const {location, getNewName, handleItemClick} =this.props
+		const {toggleMenu, location, getNewName, handleItemClick} =this.props
 	    return (    
 			<li 
 				className="list-item"
 				id={location.id} 
-				tabIndex="0"
+				tabIndex={toggleMenu==="open"?"0":"-1"}
 				aria-label={getNewName(location.name)}
 				onClick={handleItemClick.bind(this,location.id)}
 				onKeyPress={handleItemClick.bind(this,location.id)}

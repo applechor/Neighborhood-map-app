@@ -30,13 +30,12 @@ class App extends Component {
     // invoked after the component is inserted in the DOM
     componentDidMount() {
         // callback for error messsage if error in the Google API request
+        // https://stackoverflow.com/questions/45338480/try-catch-for-error-message-in-google-maps-api
         window.gm_authFailure = () => {
-            let html=  '<div ref=\'resultMap\' class=\'authFailure\'> There is an error when loading Google Maps.</div>'
+            let html= '<div ref=\'resultMap\' class=\'authFailure\'> There is an error when loading Google Maps.</div>'
             let gmContainer = document.getElementsByClassName('gm-err-content')[0]
             gmContainer.innerHTML = html
-            // this.setState({
-                //  googleMapError: true
-            // })
+            //alert('Google maps failed to load!');
         }
   
         // Fetch list of venues from foursquare API using DataAPI.getAll()
@@ -124,9 +123,7 @@ class App extends Component {
     }
 
     // find the locations that match the query then sort them by name
-    showingLocations = (query) => {
-        // if(this.state.locations!==undefined && this.state.locations.length>0) {
-        //     this.state.locations.sort(sortBy('name'))  
+    showingLocations = (query) => { 
         let filterLocations =[]
 
         if (query) {
@@ -166,7 +163,6 @@ class App extends Component {
         this.handleMarkerClick(filterMarkerObject[0].props,filterMarkerObject[0].marker)         
     }
 
-
     // When a marker or a item is clicked, that marker will active by show info window, bouncing marker 
     handleMarkerClick = (props, marker, e) => {
         let details = this.state.locations.filter(location => location.id === marker.id) 
@@ -181,7 +177,6 @@ class App extends Component {
         })
      }
 
-
     // When map is clicked, everything is cleared to default 
     // (close info window, marker does not active, list items have all location data)
     handleMapClick = (props) => {
@@ -195,8 +190,8 @@ class App extends Component {
         }
     }
 
-    // When the close button on the info window is clicked, the info window will close or when a marker is clicked,
-    // a info window is open while the previous info window of previous marker was close
+    // When the close button on the info window is clicked, the info window will close or when a marker is 
+    // clicked, a info window is open while the previous info window of previous marker was close
     infoWindowHasClosed = (props, marker, e) => {
         this.setState({
             selectedLocation: {},
@@ -261,10 +256,10 @@ class App extends Component {
                     </section>
                 </main>
                 <footer role="contentinfo">
-                    <p> get data from FourSqaure API
+                    <p> get data from FourSqaure API. 
                     <a  href="https://developer.foursquare.com/" 
                         tabIndex="0"
-                        aria-label="Link to four square API developer site"> visit</a>
+                        aria-label="Link to four square API developer site">visit</a>
                     </p>
                 </footer>
             </div>

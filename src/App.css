@@ -48,7 +48,7 @@ html, body {
 .main-container{
     display: flex;
     flex-flow: row nowrap;
-    height: 100vh;/*100vh;*/
+    height: 100%;/*100vh;*/
     width: 100%;/*100%;*/
     
 }
@@ -56,13 +56,12 @@ html, body {
     /*height: 100px;
     width: 100px;*/ /**100vw75%*/
     width: calc(100vw);
-    height: calc(100vh) ;
-    /*width: calc(100vw - 350px) !important;
-    height: calc(100vh - 100px) !important;
-    margin: 0 0 45px 0;
-    position: absolute;
-    right: 0;
-    transition: all 0.3s ease;*/
+    height: calc(100vh - 66px) !important;
+   /* width: calc(100vw)!important;
+    height: calc(100vh - 106px)!important;*/
+    /*margin: 0 0 45px;*/
+    /*position: absolute;*/
+    /*right: 0;*/
 }
 .map-container {
     /*width: 100px;
@@ -73,15 +72,16 @@ html, body {
     display: flex;
     /*justify-content: center;*/
     vertical-align: middle;
-    height: 100vh;
+    height: calc(100vh - 66px);
     width: 100vw;
     /*padding-top: 56px;*/
 }
 
-.header {
-    /*background-color: rgba(255, 255, 128, .5);*/
+.header h1{
+    /*background-color: rgba(255, 255, 128, .5); #FFFF80FF*/
     /*width: 100%;*/
     /*display: block;*/
+   text-shadow: 1px 1px 5px #e6f2ff, 0 0 25px #99ccff, 0 0 5px #004080;
 }
 .header-menu {
     display: inline-block;
@@ -103,20 +103,18 @@ html, body {
     z-index: 10;
     background-color: #fff;
     width: 300px;
-    height: 100%;
+    height: calc(100vh - 66px);
     position: absolute;
     /* This trasform moves the drawer off canvas. */
     transform: translate(-300px, 0);
     /* Optionally, we animate the drawer. */
-    transition: transform 0.3s ease;
-    visibility: hidden;
+    transition: transform 0.5s ease;
+
 }   
 
 #sidebar-search.open {
     transform: translate(0, 0);
-    height: 100%;
-    visibility: visible;
-
+    height: calc(100vh - 66px);
 }
 
 /*.sidebar-search {
@@ -144,6 +142,7 @@ html, body {
 }
 .list {
     padding: 0 10px;
+    margin: 10px 0;
 }
 .list-item {
     list-style-type: none;
@@ -154,13 +153,14 @@ html, body {
     text-align: left;
     cursor: pointer;
     border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .list-item:hover {
     text-decoration: underline;
     /*color: #212121;*/
-    background-color:rgba(255, 255, 128, .5);
-    /*background-color: #7FC9FF;*/
+    /*background-color:rgba(255, 255, 128, .5);*/
+    background-color: #e6f2ff;
     /*color: #0026FF;*/
 
 }
@@ -206,40 +206,18 @@ html, body {
    color: #0026FF;
 }
 
-.close-btn {
-    /*background: none; 
-    display: block; 
-    border: 0px; 
-    margin: 0px; 
-    padding: 0px; 
-    position: absolute; 
-    cursor: pointer; 
-    user-select: none; 
-    top: 0px; 
-    right: 0px; 
-    width: 37px; 
-    height: 33px;*/
-    width: 13px; 
-    height: 13px; 
-    overflow: hidden; 
-    position: absolute; 
-    opacity: 0.5; 
-    right: 0; 
-    top: 0; 
-    z-index: 10000; 
-    cursor: pointer;
-}
 footer {
   border-top: 1px solid #E0E0E0;
   padding: 1em;
   width: 100%;
   font-size: 13px;
+  font-style: italic;
 }
 footer p {
   margin: 0;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 420px) {
     .header-title {
         font-size: 16px
     }
@@ -252,7 +230,7 @@ footer p {
     }
 }
 
-@media screen and (min-width: 401px) and (max-width: 550px){
+@media screen and (min-width: 421px) and (max-width: 550px){
     .header-title {
         font-size: 20px
     }

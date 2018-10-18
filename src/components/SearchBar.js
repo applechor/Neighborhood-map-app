@@ -16,8 +16,8 @@ class SearchBar extends Component {
           		className="search-items"
           		type="text"
                 role="search"
-                aria-label="enter coffee shop name for searching"
-                tabIndex="0"
+                aria-label="enter coffee shop name"
+                tabIndex={toggleMenu==="open"?"0":"-1"}
           		placeholder="Search coffee shop name..."
           		value={query}
           		onChange={(event) => this.handleChange(event.target.value)}
@@ -28,12 +28,14 @@ class SearchBar extends Component {
                 value="Clear Search"
                 onClick={clearQuery}
                 aria-label="clear search"
+                tabIndex={toggleMenu==="open"?"0":"-1"}
             />
             <div className="showing-list">
                 <ol className="list">
                     {this.props.locations.map(location => (
                         <ListItems
                             key={location.id}
+                            toggleMenu={toggleMenu}
                             location={location}
                             getNewName={getNewName}
                             handleItemClick={handleItemClick}

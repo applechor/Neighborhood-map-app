@@ -12,7 +12,8 @@ class Header extends Component {
 			<a 
 				className="header-menu" 
 				tabIndex="0"
-				aria-label={toggleMenu==="open"?"collapse side panel when do not want search":"expand side panel for searching"}
+				role="button"
+				aria-label={toggleMenu==="open"?"collapse side panel if do not want search":"expand side panel for searching"}
 				title={toggleMenu==="open"?"collapse side panel":"expand side panel"}
 				onClick={onClickMenu}
 				onKeyPress={onClickMenu}
