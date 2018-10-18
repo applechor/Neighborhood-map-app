@@ -256,7 +256,7 @@ class App extends Component {
                     </section>
                 </main>
                 <footer role="contentinfo">
-                    <p> get data from FourSqaure API. 
+                    <p> Get data from FourSqaure API. 
                     <a  href="https://developer.foursquare.com/" 
                         tabIndex="0"
                         aria-label="Link to four square API developer site">visit</a>

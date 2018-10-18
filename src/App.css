@@ -1,37 +1,5 @@
-.App {
-    text-align: center;
-
-}
-
-.App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 80px;
-}
-
-.App-header {
-    background-color: #222;
-    height: 150px;
-    padding: 20px;
-    color: white;
-}
-
-.App-title {
-    font-size: 1.5em;
-}
-
-.App-intro {
-    font-size: large;
-}
-
-@keyframes App-logo-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/*-----------------------------------------------------*/
 html {
   box-sizing: border-box;
-
 }
 
 *, *:before, *:after {
@@ -42,47 +10,35 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+}
 
+.App {
+    text-align: center;
 }
 
 .main-container{
     display: flex;
     flex-flow: row nowrap;
-    height: 100%;/*100vh;*/
-    width: 100%;/*100%;*/
-    
+    height: 100%;
+    width: 100%;
 }
+
 .map {
-    /*height: 100px;
-    width: 100px;*/ /**100vw75%*/
     width: calc(100vw);
     height: calc(100vh - 66px) !important;
-   /* width: calc(100vw)!important;
-    height: calc(100vh - 106px)!important;*/
-    /*margin: 0 0 45px;*/
-    /*position: absolute;*/
-    /*right: 0;*/
 }
+
 .map-container {
-    /*width: 100px;
-    height: 100%;
-    display: block;
-    box-sizing: border-box;
-    position: relative;*/
     display: flex;
-    /*justify-content: center;*/
     vertical-align: middle;
     height: calc(100vh - 66px);
     width: 100vw;
-    /*padding-top: 56px;*/
 }
 
 .header h1{
-    /*background-color: rgba(255, 255, 128, .5); #FFFF80FF*/
-    /*width: 100%;*/
-    /*display: block;*/
    text-shadow: 1px 1px 5px #e6f2ff, 0 0 25px #99ccff, 0 0 5px #004080;
 }
+
 .header-menu {
     display: inline-block;
     font-size: 2em;
@@ -90,6 +46,7 @@ html, body {
     margin: 13px 17px 10px;
     cursor: pointer;
 }
+
 .header-title {
     display: inline-block;
     margin: 17px 0;
@@ -97,19 +54,13 @@ html, body {
 }
 
 #sidebar-search{
-    /*width: 100%;
-    margin-left: auto;
-    margin-right: auto;*/
     z-index: 10;
     background-color: #fff;
     width: 300px;
     height: calc(100vh - 66px);
     position: absolute;
-    /* This trasform moves the drawer off canvas. */
-    transform: translate(-300px, 0);
-    /* Optionally, we animate the drawer. */
-    transition: transform 0.5s ease;
-
+    transform: translate(-300px, 0);/* This trasform moves the drawer off canvas. */
+    transition: transform 0.5s ease;/* Optionally, we animate the drawer. */
 }   
 
 #sidebar-search.open {
@@ -117,37 +68,25 @@ html, body {
     height: calc(100vh - 66px);
 }
 
-/*.sidebar-search {
-    display: flex;
-    flex-flow: column wrap;
-    width: 300px; /* 350px 100%*/
-    /*height: 100%;*
-    overflow-y: auto;/* scroll;
-    
-} */ 
 #clear-list {
     width: 100%;
     cursor: pointer;
-    /*padding: 6px;*/
 }
 
 .search-items {
     font-size: 16px;
     padding: 5px;
     width: 100%;
-    /*overflow-y: scroll;*/
 }
-.showing-list {
-    /*overflow-y: scroll;*/
-}
+
 .list {
     padding: 0 10px;
     margin: 10px 0;
 }
+
 .list-item {
     list-style-type: none;
     padding: 0.3em;
-    /*margin-bottom: 1em;*/
     margin: 5px;
     font-size: 15px;
     text-align: left;
@@ -158,50 +97,37 @@ html, body {
 
 .list-item:hover {
     text-decoration: underline;
-    /*color: #212121;*/
-    /*background-color:rgba(255, 255, 128, .5);*/
     background-color: #e6f2ff;
-    /*color: #0026FF;*/
-
 }
+
 .iw-container {
     overflow: auto;
     display: flex;
     /*flex-flow: column;*/
 }
+
 .iw-content {
-    /*display: inline-block;*/
     margin: 7px 0 0 10px;
-     /*margin: 0;*/
     text-align: left;
 }
 
 .iw-content p {
     margin: 8px 0;
 }
+
 .iw-content p:hover {
     color: #0026FF;
 }
 
-.iw-photo {
-    /*vertical-align: middle;*/
-    /*float: left;*/
-    /*display: inline-block;*/
- 
-}
 .iw-photo img {
-    /*float: left;*/
-    /*display: block*/
     margin: 7% 0 5%;
-
-    /*margin: 0;*/
 }
+
 .iw-title {
-    
     font-size: 14px;
-    /*margin: 7% 0;*/
     margin: 3% 0;
 }
+
 .iw-title:hover {
    color: #0026FF;
 }
@@ -213,6 +139,7 @@ footer {
   font-size: 13px;
   font-style: italic;
 }
+
 footer p {
   margin: 0;
 }
@@ -255,41 +182,3 @@ footer p {
         font-size: 15px;
     }
 }
-
-@media screen and (min-width: 549px) {}
-
-@media screen and (min-width: 549px) {}
-
-/*@media screen and (max-width: 549px) {
-    #sidebar-search{
-    /*width: 100%;
-    margin-left: auto;
-    margin-right: auto;*
-    z-index: 10;
-    background-color: #fff;
-    width: 300px;
-    height: 100%;
-    position: absolute;
-     This trasform moves the drawer off canvas. 
-    transform: translate(-300px, 0);
-    /* Optionally, we animate the drawer. *
-    transition: transform 0.3s ease;
-}   
-
-#sidebar-search.open {
-    transform: translate(0, 0);
-    height: 100%;
-
-}
-
-}*/
-
-/*
-@media screen and (min-width: 850px) {
-    main, .header, .main-container, .search-bar-container, .map-container  {
-        width: 850px;
-        margin-left: auto;
-        margin-right: auto; 
-    }
-  
-}*/
