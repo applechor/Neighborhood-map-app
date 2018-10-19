@@ -6,13 +6,13 @@ Runs the app in the development mode:
 * clone this respository and cd to directory which has this respository.
 * install all project dependencies with `npm install`. 
 * start the development server with `npm start`.
-* launch the site in your browser at http://localhost:3000.
+* launch the site in your browser at localhost:3000.
 
 ## Deployment mode
 Builds the app for production to the build folder:
 * run `npm run build`.
 * serve -s build.
-* navigate to localhost: 5000.
+* navigate to localhost:5000.
 
 ## Inside Application:
 ### How to Development
