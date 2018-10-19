@@ -15,7 +15,7 @@ Builds the app for production to the build folder:
 * navigate to localhost:5000.
 
 ## Inside Application:
-### How to Development
+### Development Steps
 1. Obtain a Google Maps API Key and write code to add a full-screen map to my page using the Google Maps API.
 2. Write code to display map markers and info windows identifying Top 15 of coffee shops in Chaingmai, Thailand. My app will display those locations by default when the page is loaded.
 3. Implement a list view of the set of locations I have defined.
