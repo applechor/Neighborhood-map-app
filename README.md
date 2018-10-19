@@ -26,15 +26,15 @@ Builds the app for production to the build folder:
 
 ### Functionality
 including: 
-* map markers to identify popular locations that are coffee shops in Chaingmai, Thailand.
-* a search function to easily discover these locations.
-* a list view to support simple browsing of all locations. 
-* a search input text and a list view are on the left-side panel which has a toogle button to open or close that panel.
+* Map markers to identify popular locations that are coffee shops in Chaingmai, Thailand.
+* A search function to easily discover these locations.
+* A list view to support simple browsing of all locations. 
+* A search input text and a list view are on the left-side panel which has a toogle button to open or close that panel.
 * The search input text should filter the list view and the markers on the map.
 * Selecting a location via list item or map marker should cause the map marker to bounce. This indicates that the location has been selected, and an associated info window should open above the map marker with additional information.
 * Clearing map, search input text, and list view, to be default should click clear search button or empty search input text.
 * Closing info Window or stop bouncing marker, you should click wherever on map or click clear search button.
-* implement third-party APIs that provide additional information about each of these locations.
+* Implement third-party APIs that provide additional information about each of these locations.
 
 ### Asynchronicity and Error Handling
 All data API's used in the application should load asynchronously, and errors should be handled gracefully. In case of error (e.g., a situation in which a third party API does not return the expected result or Google Maps API error), A message is displayed that notifies the user that the data cannot be loaded.
