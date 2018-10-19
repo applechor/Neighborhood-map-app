@@ -2,9 +2,9 @@
 
 /*======================FourSquare API===========================*/
 const api = "https://api.foursquare.com/v2/venues"
-const client_ID = "VXXKOU23M1YV1HW40RU3RVWRJ5JXA50MH5AD51M15W5SPB3Z"
-const client_secret = "4UG11WJJ0S5A1H3NXL42T0ORH4E4VY4PUH25VVJUTKMPOCXY"
-const version = "20180930"
+const client_ID = "ETBUYYTEGDY4WCF1IZXYZJVILWVA5NTLHGQ0WHA13OL2QGA2"
+const client_secret = "MJRDFQ43T0FSXPBBFA535VVJVKLUFATMY5IHP2DOFTOKZSYP"
+const version = "20180708"
 const latlang = "18.787747,98.993128"
 const query = "coffee shop"
 const nearPlace = "Chiang Mai, Thailand"
